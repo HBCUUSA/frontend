@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 // List of admin user IDs - replace with your admin user IDs
 const ADMIN_USER_IDS = ['FwIvYUynY6anohhwr6C3LSvqs4V2'];
+const baseURL = process.env.REACT_APP_BASE_URL
 
 const AdminDashboard = () => {
   const { user, getAuthHeader } = useAuth();
@@ -43,7 +44,7 @@ const AdminDashboard = () => {
 
     try {
       const response = await axios.get(
-        'http://localhost:5001/api/admin/dashboard-stats',
+        `{baseURL}/api/admin/dashboard-stats`,
         getAuthHeader()
       );
       
@@ -72,7 +73,7 @@ const AdminDashboard = () => {
         setError("");
         
         const response = await axios.get(
-          `http://localhost:5001/api/admin/contributions?status=${statusFilter}&limit=10`,
+          `{baseURL}/api/admin/contributions?status=${statusFilter}&limit=10`,
           getAuthHeader()
         );
         
@@ -94,7 +95,7 @@ const AdminDashboard = () => {
     
     try {
       const response = await axios.get(
-        `http://localhost:5001/api/admin/contributions?status=${statusFilter}&limit=10&lastId=${pagination.lastId}`,
+        `{baseURL}/api/admin/contributions?status=${statusFilter}&limit=10&lastId=${pagination.lastId}`,
         getAuthHeader()
       );
       
@@ -145,7 +146,7 @@ const AdminDashboard = () => {
       
       // Make the API call to update status
       await axios.put(
-        `http://localhost:5001/api/admin/contributions/${id}/status`,
+        `{baseURL}/api/admin/contributions/${id}/status`,
         requestData,
         getAuthHeader()
       );
@@ -203,7 +204,7 @@ const AdminDashboard = () => {
       
       // Make the API call to delete the contribution
       await axios.delete(
-        `http://localhost:5001/api/admin/contributions/${id}`,
+        `{baseURL}/api/admin/contributions/${id}`,
         getAuthHeader()
       );
       

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
+const baseURL = process.env.REACT_APP_BASE_URL
 
 const Contribute = () => {
   const { user, getAuthHeader } = useAuth();
@@ -31,8 +32,7 @@ const Contribute = () => {
     
     try {
       // Submit contribution via API
-      await axios.post(
-        'http://localhost:5001/api/contributions',
+      await axios.post(`${baseURL}/api/contributions`,
         {
           name: data.name,
           website: data.website,

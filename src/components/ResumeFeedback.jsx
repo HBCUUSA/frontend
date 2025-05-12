@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+const baseURL = process.env.REACT_APP_BASE_URL
 
 // Helper function to format dates consistently
 const formatDate = (dateInput) => {
@@ -263,14 +264,14 @@ const ResumeFeedback = ({ userId }) => {
       
       try {
         const resumeResponse = await axios.get(
-          `http://localhost:5001/api/resume/user/${userId}`,
+          `${baseURL}/api/resume/user/${userId}`,
           getAuthHeader()
         );
         
         setResumeData(resumeResponse.data);
         
         const feedbackResponse = await axios.get(
-          `http://localhost:5001/api/resume/feedback/${userId}`,
+          `${baseURL}/api/resume/feedback/${userId}`,
           getAuthHeader()
         );
         
@@ -300,7 +301,7 @@ const ResumeFeedback = ({ userId }) => {
     
     try {
       const response = await axios.post(
-        `http://localhost:5001/api/resume/feedback/${userId}`,
+        `${baseURL}/api/resume/feedback/${userId}`,
         {
           content: newFeedback
         },
@@ -321,7 +322,7 @@ const ResumeFeedback = ({ userId }) => {
   const handleReply = async (parentId, content) => {
     try {
       const response = await axios.post(
-        `http://localhost:5001/api/resume/feedback/${userId}`,
+        `${baseURL}/api/resume/feedback/${userId}`,
         {
           content,
           parentId
@@ -363,7 +364,7 @@ const ResumeFeedback = ({ userId }) => {
     
     try {
       await axios.delete(
-        `http://localhost:5001/api/resume/feedback/${feedbackId}`,
+        `${baseURL}/api/resume/feedback/${feedbackId}`,
         getAuthHeader()
       );
       
@@ -394,7 +395,7 @@ const ResumeFeedback = ({ userId }) => {
     try {
       // Use the backend endpoint to handle voting
       const response = await axios.post(
-        `http://localhost:5001/api/resume/feedback/${feedbackId}/upvote`,
+        `${baseURL}/api/resume/feedback/${feedbackId}/upvote`,
         {},
         getAuthHeader()
       );
@@ -435,7 +436,7 @@ const ResumeFeedback = ({ userId }) => {
     try {
       // Use the backend endpoint to handle voting
       const response = await axios.post(
-        `http://localhost:5001/api/resume/feedback/${feedbackId}/downvote`,
+        `${baseURL}/api/resume/feedback/${feedbackId}/downvote`,
         {},
         getAuthHeader()
       );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-
+const baseURL = process.env.REACT_APP_BASE_URL
 const Experience = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ const Experience = () => {
     const fetchTestimonials = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5001/api/testimonials?limit=6');
+        const response = await axios.get(`${baseURL}/api/testimonials?limit=6`);
         setTestimonials(response.data.testimonials);
       } catch (err) {
         console.error("Error fetching testimonials:", err);

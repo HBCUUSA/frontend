@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Footer from '../components/Footer';
+const baseURL = process.env.REACT_APP_BASE_URL
 
 const Mentor = () => {
   const [mentors, setMentors] = useState([]);
@@ -14,7 +15,7 @@ const Mentor = () => {
       try {
         setLoading(true);
         // This would be replaced with your actual API endpoint
-        const response = await axios.get('http://localhost:5001/api/mentors');
+        const response = await axios.get(`${baseURL}/api/mentors`);
         setMentors(response.data.mentors);
         
         // Extract unique universities for the filter

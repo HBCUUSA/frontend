@@ -4,6 +4,7 @@ import Searchbox from '../components/Searchbox';
 import { Outlet } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../components/Footer';
+const baseURL = process.env.REACT_APP_BASE_URL
 
 const Dashboard = () => {
   const { user, getAuthHeader } = useAuth();
@@ -20,7 +21,7 @@ const Dashboard = () => {
         setLoading(true);
         setError(null);
         
-        const response = await axios.get('http://localhost:5001/api/programs');
+        const response = await axios.get(`${baseURL}/api/programs`);
         setPrograms(response.data);
       } catch (err) {
         console.error("Error fetching programs:", err);
@@ -53,7 +54,7 @@ const Dashboard = () => {
       if (search) params.search = search;
       if (month) params.month = month;
       
-      const response = await axios.get('http://localhost:5001/api/programs/filter', { params });
+      const response = await axios.get(`${baseURL}/api/programs/filter`, { params });
       setPrograms(response.data);
     } catch (err) {
       console.error("Error fetching filtered programs:", err);

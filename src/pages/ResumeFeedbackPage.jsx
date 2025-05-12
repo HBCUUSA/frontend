@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import ResumeFeedback from '../components/ResumeFeedback';
 import axios from 'axios';
-
+const baseURL = process.env.REACT_APP_BASE_URL
 const ResumeFeedbackPage = () => {
   const { userId } = useParams();
   const { user, getAuthHeader } = useAuth();
@@ -18,7 +18,7 @@ const ResumeFeedbackPage = () => {
       
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/resume/user/${userId}`,
+          `${baseURL}/api/resume/user/${userId}`,
           getAuthHeader()
         );
         

@@ -5,9 +5,10 @@ const AuthContext = createContext();
 
 // Google client ID from environment variables
 //for some reason if i use the environment variable it doesn't work, check it out able
-const GOOGLE_CLIENT_ID = "119947829937-p4hrga3gkhtlntpm3iukia740np56c28.apps.googleusercontent.com";
 
-
+const GOOGLE_CLIENT_ID  = process.env.REACT_APP_GOOGLE_CLIENT_ID 
+const baseURL = process.env.REACT_APP_BASE_URL
+console.log("baseURL", baseURL)
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -31,7 +32,7 @@ export function AuthProvider({ children }) {
           
           // Verify token is still valid with the backend
           try {
-            const response = await axios.get("http://localhost:5001/api/auth/verify", {
+            const response = await axios.get(`${baseURL}/api/auth/verify`, {
               headers: {
                 Authorization: `Bearer ${token}`
               }
@@ -131,13 +132,14 @@ export function AuthProvider({ children }) {
   // Login function
   const login = async (email, password) => {
     try {
-      const response = await axios.post("http://localhost:5001/api/auth/login", {
+      const response = await axios.post(`${baseURL}/api/auth/login`, {
         email,
         password
       });
       
       // Store token and user data
       const { token, user } = response.data;
+      console.log("Login response:", response.data);
       
       // Make sure token is actually present
       if (!token) {
@@ -166,7 +168,7 @@ export function AuthProvider({ children }) {
   const logout = async () => {
     try {
       // Call logout endpoint (optional)
-      await axios.post("http://localhost:5001/api/auth/logout", {}, getAuthHeader());
+      await axios.post(`${baseURL}/api/auth/logout`, {}, getAuthHeader());
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
@@ -203,7 +205,7 @@ export function AuthProvider({ children }) {
   // Signup function
   const signup = async (email, password, displayName, college) => {
     try {
-      const response = await axios.post("http://localhost:5001/api/auth/signup", {
+      const response = await axios.post(`${baseURL}/api/auth/signup`, {
         email,
         password,
         displayName,
@@ -226,7 +228,7 @@ export function AuthProvider({ children }) {
   // Process Google sign in
   const processGoogleSignIn = async (credential) => {
     try {
-      const response = await axios.post("http://localhost:5001/api/auth/google", {
+      const response = await axios.post(`${baseURL}/api/auth/google`, {
         credential: credential
       });
       

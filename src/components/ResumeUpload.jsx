@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+const baseURL = process.env.REACT_APP_API_URL
 
 const ResumeUpload = ({ showPreview = false }) => {
   const { user, getAuthHeader } = useAuth();
@@ -22,7 +23,7 @@ const ResumeUpload = ({ showPreview = false }) => {
       
       try {
         const response = await axios.get(
-          'http://localhost:5001/api/resume',
+          `{baseURL}/api/resume`,
           getAuthHeader()
         );
         
@@ -106,7 +107,7 @@ const ResumeUpload = ({ showPreview = false }) => {
       formData.append('resume', resumeFile);
       
       const response = await axios.post(
-        'http://localhost:5001/api/resume/upload',
+        `{baseURL}/api/resume/upload`,
         formData,
         {
           ...getAuthHeader(),
@@ -162,7 +163,7 @@ const ResumeUpload = ({ showPreview = false }) => {
     
     try {
       await axios.delete(
-        'http://localhost:5001/api/resume',
+        `{baseURL}/api/resume`,
         getAuthHeader()
       );
       
@@ -186,7 +187,7 @@ const ResumeUpload = ({ showPreview = false }) => {
     
     try {
       const response = await axios.put(
-        'http://localhost:5001/api/resume/toggle-public',
+        `{baseURL}/api/resume/toggle-public`,
         {},
         getAuthHeader()
       );

@@ -4,6 +4,8 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
+const baseURL = process.env.REACT_APP_BASE_URL
+
 
 const Profile = () => {
   const { user, getAuthHeader } = useAuth();
@@ -43,7 +45,7 @@ const Profile = () => {
         
         // Get additional info from Firestore via backend API
         const response = await axios.get(
-          `http://localhost:5001/api/users/profile`, 
+          `${baseURL}/api/users/profile`, 
           getAuthHeader()
         );
         
@@ -119,7 +121,7 @@ const Profile = () => {
       
       // Send the file to the backend
       const response = await axios.post(
-        'http://localhost:5001/api/users/upload-profile-image',
+        `${baseURL}/api/users/upload-profile-image`,
         formData,
         {
           ...getAuthHeader(),
@@ -179,7 +181,7 @@ const Profile = () => {
       
       // Update profile in backend
       const response = await axios.put(
-        'http://localhost:5001/api/users/profile',
+        `${baseURL}/api/users/profile`,
         updatedData,
         getAuthHeader()
       );

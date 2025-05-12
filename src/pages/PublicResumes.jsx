@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 
+const baseURL = process.env.REACT_APP_BASE_URL
 const PublicResumes = () => {
   const { user, getAuthHeader } = useAuth();
   const [resumes, setResumes] = useState([]);
@@ -22,7 +23,7 @@ const PublicResumes = () => {
       
       try {
         const response = await axios.get(
-          'http://localhost:5001/api/resume/public',
+          `${baseURL}/api/resume/public`,
           getAuthHeader()
         );
         

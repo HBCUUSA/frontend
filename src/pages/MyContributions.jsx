@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
-
+const baseURL = process.env.REACT_APP_BASE_URL
 const MyContributions = () => {
   const { user, getAuthHeader } = useAuth();
   const [contributions, setContributions] = useState([]);
@@ -18,7 +18,7 @@ const MyContributions = () => {
       try {
         // Use the API endpoint instead of direct Firebase access
         const response = await axios.get(
-          'http://localhost:5001/api/contributions/my-contributions',
+          `${baseURL}/api/contributions/my-contributions`,
           getAuthHeader()
         );
         
