@@ -75,7 +75,7 @@ export function AuthProvider({ children }) {
         try {
           const result = await processGoogleSignIn(response.credential);
           if (result.success) {
-            window.location.href = '/dashboard';
+            window.location.href = '/programs';
           }
         } catch (error) {
           console.error("Error processing Google credential:", error);
@@ -295,7 +295,7 @@ export function AuthProvider({ children }) {
               try {
                 const result = await processGoogleSignIn(response.credential);
                 if (result.success) {
-                  window.location.href = '/dashboard';
+                  window.location.href = '/programs';
                   resolve(result);
                 }
               } catch (error) {

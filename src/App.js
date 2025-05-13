@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "r
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
+// import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import About from "./pages/About";
 import Map from "./components/Map";
@@ -63,7 +63,6 @@ function AppRoutes() {
         {/* Public Routes - Always Accessible */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/landing" element={<LandingPage />} />
-        <Route path="/programs" element={<Programs />} />
         <Route path="/about" element={<About />} />
         <Route path="/hbcu" element={<Hbcu />} />
         <Route path="/experience" element={<Experience />} />
@@ -72,17 +71,22 @@ function AppRoutes() {
         {/* Auth Routes - Only when not logged in */}
         <Route 
           path="/login" 
-          element={user ? <Navigate to="/dashboard" /> : <Login />} 
+          element={user ? <Navigate to="/programs" /> : <Login />} 
         />
         <Route 
           path="/signup" 
-          element={user ? <Navigate to="/dashboard" /> : <Signup />} 
+          element={user ? <Navigate to="/programs" /> : <Signup />} 
         />
         
         {/* Protected Routes - Require Authentication */}
-        <Route 
+        {/* <Route 
           path="/dashboard" 
           element={<ProtectedRoute><Dashboard /></ProtectedRoute>} 
+        /> */}
+
+        <Route 
+          path="/programs"
+          element={<ProtectedRoute><Programs /></ProtectedRoute>}
         />
         <Route 
           path="/contribute" 
@@ -125,7 +129,7 @@ function AppRoutes() {
         {/* Fallback route */}
         <Route 
           path="*" 
-          element={user ? <Navigate to="/dashboard" /> : <Navigate to="/" />} 
+          element={user ? <Navigate to="/programs" /> : <Navigate to="/" />} 
         />
       </Routes>
     </>

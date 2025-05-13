@@ -59,8 +59,8 @@ const Login = () => {
       const result = await login(data.email, data.password);
       
       if (result.success) {
-        // Redirect to dashboard
-        navigate('/dashboard');
+        // Redirect to prrograms page after successful login
+        navigate('/programs');
       } else {
         setError(result.message);
       }

@@ -289,19 +289,19 @@ const Programs = () => {
             )}
           </svg>
         </button>
-        
+        {/* TODO: Create a separate component for the sidebar and import this component to other pages */}
         <div className={`p-6 ${isSidebarCollapsed ? 'px-4' : ''}`}>
-          <Link to="/">
+          {/* <Link to="/">
             <img 
               src="/img/logo-no-background.png" 
               alt="HBCU Logo" 
               className={`${isSidebarCollapsed ? 'w-12' : 'w-40'} h-auto mx-auto mb-8 transition-all duration-300`}
             />
-          </Link>
+          </Link> */}
           
-          <nav className="mt-8">
+          <nav className="">
             <div className="space-y-2">
-              <Link to="/dashboard" 
+              <Link to="/programs" 
                 className={`flex items-center px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors
                 ${isSidebarCollapsed ? 'justify-center' : ''}`}
                 title="Programs"

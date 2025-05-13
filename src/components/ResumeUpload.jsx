@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-const baseURL = process.env.REACT_APP_API_URL
+const baseURL = process.env.REACT_APP_BASE_URL
+console.log(baseURL);
 
 const ResumeUpload = ({ showPreview = false }) => {
   const { user, getAuthHeader } = useAuth();
@@ -23,7 +24,7 @@ const ResumeUpload = ({ showPreview = false }) => {
       
       try {
         const response = await axios.get(
-          `{baseURL}/api/resume`,
+          `${baseURL}/api/resume`,
           getAuthHeader()
         );
         
@@ -34,14 +35,21 @@ const ResumeUpload = ({ showPreview = false }) => {
         if (showPreview && response.data.resumeURL) {
           setPreviewUrl(response.data.resumeURL);
         }
-        
-        // Hide upload form if resume exists
-        setShowUploadForm(false);
-        setShowUploadModal(false);
+        // Check if resume exists. if not a valid URL (in ourr case will be false), show upload form
+        if (response.data.resumeURL == null) { 
+          
+          setShowUploadForm(true);
+          setShowUploadModal(false);
+        }
+        // if there is a resume, show the resume and hide the upload form
+        else {
+          setShowUploadForm(false);
+          setShowUploadModal(false);
+        }
       } catch (err) {
         if (err.response?.status === 404) {
           // No resume found, show upload form
-          setShowUploadForm(true);
+          console.error('Something went wrong when accessing the resume!', err);
         } else {
           console.error('Error fetching resume:', err);
           setError('Failed to load resume information');
@@ -107,7 +115,7 @@ const ResumeUpload = ({ showPreview = false }) => {
       formData.append('resume', resumeFile);
       
       const response = await axios.post(
-        `{baseURL}/api/resume/upload`,
+        `${baseURL}/api/resume/upload`,
         formData,
         {
           ...getAuthHeader(),
@@ -157,17 +165,28 @@ const ResumeUpload = ({ showPreview = false }) => {
       return;
     }
     
-    setLoading(true);
+    setLoading();
     setError(null);
     setSuccess(null);
     
     try {
       await axios.delete(
-        `{baseURL}/api/resume`,
+        `${baseURL}/api/resume`,
         getAuthHeader()
       );
       
-      setCurrentResume(null);
+      // setCurrentResume({
+      //   resumeURL: response.data.resumeURL,
+      //   resumeName: response.data.resumeName,
+      //   resumeUpdatedAt: new Date(),
+      //   isPublic: response.data.isPublic || false
+      // });
+      setCurrentResume( {
+        resumeURL: null,
+        resumeName: null,
+        resumeUpdatedAt: null,
+        isPublic: false
+      });
       setPreviewUrl(null);
       setSuccess('Resume deleted successfully');
       setShowUploadForm(true);
@@ -187,7 +206,7 @@ const ResumeUpload = ({ showPreview = false }) => {
     
     try {
       const response = await axios.put(
-        `{baseURL}/api/resume/toggle-public`,
+        `${baseURL}/api/resume/toggle-public`,
         {},
         getAuthHeader()
       );
@@ -247,9 +266,12 @@ const ResumeUpload = ({ showPreview = false }) => {
           </div>
           
           {/* Resume Info */}
+        {currentResume.resumeURL !== null && (
           <div className="bg-gray-100 dark:bg-gray-700 p-4 flex justify-between items-center">
             <div>
-              <h3 className="font-semibold text-gray-800 dark:text-white">{currentResume.resumeName}</h3>
+              <h3 className="font-semibold text-gray-800 dark:text-white">
+                {currentResume.resumeName}
+              </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Uploaded: {new Date(currentResume.resumeUpdatedAt).toLocaleString()}
               </p>
@@ -266,6 +288,8 @@ const ResumeUpload = ({ showPreview = false }) => {
               Open
             </a>
           </div>
+        )}
+
           
           {/* PDF Preview */}
           {previewUrl && previewUrl.includes('.pdf') && (
@@ -279,7 +303,7 @@ const ResumeUpload = ({ showPreview = false }) => {
           )}
           
           {/* Non-PDF file message */}
-          {previewUrl && !previewUrl.includes('.pdf') && (
+          {currentResume.resumeURL !== null && previewUrl && !previewUrl.includes('.pdf') && (
             <div className="p-8 bg-gray-50 dark:bg-gray-800 text-center border-t border-gray-200 dark:border-gray-700">
               <div className="max-w-md mx-auto">
                 <svg className="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -313,7 +337,7 @@ const ResumeUpload = ({ showPreview = false }) => {
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                  {currentResume ? 'Replace Your Resume' : 'Upload Your Resume'}
+                  {currentResume.resumeURL !== null ? 'Replace Your Resume' : 'Upload Your Resume'}
                 </h2>
                 <button 
                   onClick={() => setShowUploadModal(false)}
@@ -400,7 +424,7 @@ const ResumeUpload = ({ showPreview = false }) => {
                       Uploading...
                     </span>
                   ) : (
-                    <span>{currentResume ? 'Replace Resume' : 'Upload Resume'}</span>
+                    <span>{currentResume.resumeURL !== null ? 'Replace Resume' : 'Upload Resume'}</span>
                   )}
                 </button>
               </div>
@@ -410,7 +434,7 @@ const ResumeUpload = ({ showPreview = false }) => {
       )}
       
       {/* Upload Form (for initial upload only) */}
-      {(showUploadForm && !currentResume) && (
+      {(showUploadForm && !currentResume.resumeURL) && (
         <div className="p-6">
           <div className="mb-6">
             <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-white">
