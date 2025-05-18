@@ -24,6 +24,7 @@ const Login = () => {
             googleButtonRef.current,
             { 
               theme: 'outline',
+            
               size: 'large', 
               type: 'standard',
               text: 'signin_with',

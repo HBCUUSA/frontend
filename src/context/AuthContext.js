@@ -156,7 +156,7 @@ export function AuthProvider({ children }) {
       
       return { success: true };
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("Login error:", error.message);
       return { 
         success: false, 
         message: error.response?.data?.message || "Login failed" 
