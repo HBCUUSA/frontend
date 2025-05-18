@@ -92,13 +92,16 @@ const FilterDropdown = ({ filters, onApplyFilters }) => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Program Type</label>
               <select
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                value={filters.type}
-                onChange={(e) => onApplyFilters("type", e.target.value)}
+                value={filters.programType}
+                onChange={(e) => onApplyFilters("programType", e.target.value)}
               >
                 <option value="">All Types</option>
                 <option value="Scholarship">Scholarship</option>
                 <option value="Fellowship">Fellowship</option>
                 <option value="Internship">Internship</option>
+                <option value="Initiative">Initiative</option>
+                <option value="Conference">Conference</option>
+                <option value="Program">Program</option>
               </select>
             </div>
           </div>
@@ -134,7 +137,7 @@ const Programs = () => {
   const [filters, setFilters] = useState({
     month: "",
     university: "",
-    type: "",
+    programType: "",
     citizenship: ""
   });
   const [filteredPrograms, setFilteredPrograms] = useState([]);
@@ -215,7 +218,7 @@ const Programs = () => {
           // Ensure description has a value if empty
           description: program.description || "No description available",
           // Set default type if not provided
-          type: program.type || "Scholarship",
+          programType: program.programType || "Scholarship",
           // Set default university and citizenship
           university: program.university || "",
           citizenship: program.citizenship || ""
@@ -240,7 +243,7 @@ const Programs = () => {
         (searchTerm === "" || program.name.toLowerCase().includes(searchTerm.toLowerCase())) &&
         (filters.month === "" || program.applicationMonth === filters.month) &&
         (filters.university === "" || program.university === filters.university) &&
-        (filters.type === "" || program.type === filters.type) &&
+        (filters.programType === "" || program.programType === filters.programType) &&
         (filters.citizenship === "" || program.citizenship === filters.citizenship)
       ));
     }
@@ -251,7 +254,7 @@ const Programs = () => {
       setFilters({
         month: "",
         university: "",
-        type: "",
+        programType: "",
         citizenship: ""
       });
     } else {
@@ -648,11 +651,11 @@ const Programs = () => {
                           </span>
                         </div>
                       )}
-                      {program.type && (
+                      {program.programType && (
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-500">Type</span>
+                          <span className="text-gray-500">Program Type</span>
                           <span className="font-medium text-gray-800 bg-gray-100 px-2 py-0.5 rounded-full">
-                            {program.type}
+                            {program.programType}
                           </span>
                         </div>
                       )}
