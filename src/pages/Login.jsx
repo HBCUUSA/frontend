@@ -19,8 +19,11 @@ const Login = () => {
   const googleButtonRef = useRef(null);
   const [googleButtonVisible, setGoogleButtonVisible] = useState(false);
 
-  // Initialize Google Sign-In button
+  // Initialize Google Sign-In button only when not in reset password flow
   useEffect(() => {
+    // Only attempt to render Google button when on main login screen
+    if (showResetForm || showMagicLinkForm) return;
+    
     // Set a timeout to ensure the DOM is fully loaded
     const timer = setTimeout(() => {
       if (window.google && googleButtonRef.current) {
@@ -29,7 +32,6 @@ const Login = () => {
             googleButtonRef.current,
             { 
               theme: 'outline',
-            
               size: 'large', 
               type: 'standard',
               text: 'signin_with',
@@ -44,13 +46,13 @@ const Login = () => {
           setGoogleButtonVisible(false);
         }
       } else {
-        console.log("Google Identity Services not available for rendering button");
+        // Silent fail - don't log when in password reset flow
         setGoogleButtonVisible(false);
       }
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [googleButtonRef.current]);
+  }, [googleButtonRef.current, showResetForm, showMagicLinkForm]);
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
@@ -99,6 +101,13 @@ const Login = () => {
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
+    
+    // Validate email
+    if (!resetEmail || !resetEmail.trim()) {
+      setError("Please enter your email address");
+      return;
+    }
+    
     setLoading(true);
     setError("");
     setSuccess("");
@@ -109,9 +118,17 @@ const Login = () => {
       setTimeout(() => {
         setShowResetForm(false);
         setSuccess("");
+        setResetEmail("");
       }, 5000);
     } catch (error) {
-      setError("Failed to send password reset email. Please check your email address.");
+      console.error("Password reset error:", error);
+      if (error.code === 'auth/user-not-found') {
+        setError("No account found with this email address.");
+      } else if (error.code === 'auth/invalid-email') {
+        setError("Please enter a valid email address.");
+      } else {
+        setError("Failed to send password reset email. Please try again later.");
+      }
     } finally {
       setLoading(false);
     }
@@ -186,11 +203,23 @@ const Login = () => {
                     loading ? 'opacity-70 cursor-not-allowed' : ''
                   }`}
                 >
-                  {loading ? 'Sending...' : 'Send Reset Link'}
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </div>
+                  ) : 'Send Reset Link'}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowResetForm(false)}
+                  onClick={() => {
+                    setShowResetForm(false);
+                    setError("");
+                    setResetEmail("");
+                  }}
                   className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none transition-colors duration-200"
                 >
                   Back to Login
@@ -228,11 +257,23 @@ const Login = () => {
                     loading ? 'opacity-70 cursor-not-allowed' : ''
                   }`}
                 >
-                  {loading ? 'Sending...' : 'Send Magic Link'}
+                  {loading ? (
+                    <div className="flex items-center justify-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Sending...
+                    </div>
+                  ) : 'Send Magic Link'}
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowMagicLinkForm(false)}
+                  onClick={() => {
+                    setShowMagicLinkForm(false);
+                    setError("");
+                    setMagicLinkEmail("");
+                  }}
                   className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none transition-colors duration-200"
                 >
                   Back to Login
@@ -283,7 +324,11 @@ const Login = () => {
                 <div className="flex justify-end">
                   <button
                     type="button"
-                    onClick={() => setShowResetForm(true)}
+                    onClick={() => {
+                      setShowResetForm(true);
+                      setError("");
+                      setResetEmail(data.email || ""); // Pre-fill with login email if available
+                    }}
                     className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200"
                   >
                     Forgot password?
@@ -317,7 +362,11 @@ const Login = () => {
 
               <button
                 type="button"
-                onClick={() => setShowMagicLinkForm(true)}
+                onClick={() => {
+                  setShowMagicLinkForm(true);
+                  setError("");
+                  setMagicLinkEmail(data.email || ""); // Pre-fill with login email if available
+                }}
                 className="w-full mt-4 py-3 px-4 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-200 flex items-center justify-center"
               >
                 <FiMail className="mr-2" size={18} />

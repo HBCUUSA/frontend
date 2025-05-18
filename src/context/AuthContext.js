@@ -352,6 +352,53 @@ export function AuthProvider({ children }) {
     return true;
   };
 
+  // Reset password function - simplified to use only backend API
+  const resetPassword = async (email) => {
+    if (!email || !email.trim()) {
+      throw new Error("Email is required");
+    }
+    
+    try {
+      await axios.post(`${baseURL}/api/auth/reset-password`, { email });
+      return { success: true };
+    } catch (error) {
+      console.error("Password reset error:", error);
+      
+      // Create an error with code similar to Firebase for consistency in error handling
+      const customError = new Error(
+        error.response?.data?.message || "Failed to send password reset email"
+      );
+      
+      // Add code property to match expected format in Login.jsx error handler
+      if (error.response?.status === 404) {
+        customError.code = 'auth/user-not-found';
+      } else if (error.response?.data?.code) {
+        customError.code = error.response.data.code;
+      } else if (error.response?.status === 400) {
+        customError.code = 'auth/invalid-email';
+      } else {
+        customError.code = 'auth/unknown';
+      }
+      
+      throw customError;
+    }
+  };
+
+  // Send sign-in link (Magic Link) 
+  const sendSignInLink = async (email, redirectUrl) => {
+    try {
+      const response = await axios.post(`${baseURL}/api/auth/magic-link`, {
+        email,
+        redirectUrl
+      });
+      
+      return { success: true };
+    } catch (error) {
+      console.error("Magic link error:", error);
+      throw new Error(error.response?.data?.message || "Failed to send magic link");
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -360,7 +407,9 @@ export function AuthProvider({ children }) {
     logout,
     getAuthHeader,
     signInWithGoogle,
-    handleGoogleCallback
+    handleGoogleCallback,
+    resetPassword,
+    sendSignInLink
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
