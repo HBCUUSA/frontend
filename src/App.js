@@ -50,8 +50,8 @@ function AppRoutes() {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
-  // Define routes where Navbar should be hidden
-  const hideNavbarRoutes = ['/landing', '/programs','/'];
+  // Define routes where Navbar should be hidden (these pages use Sidebar instead)
+  const hideNavbarRoutes = ['/landing', '/programs', '/', '/about', '/hbcu', '/experience'];
   const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -79,11 +79,6 @@ function AppRoutes() {
         />
         
         {/* Protected Routes - Require Authentication */}
-        {/* <Route 
-          path="/dashboard" 
-          element={<ProtectedRoute><Dashboard /></ProtectedRoute>} 
-        /> */}
-
         <Route 
           path="/programs"
           element={<ProtectedRoute><Programs /></ProtectedRoute>}
@@ -101,7 +96,6 @@ function AppRoutes() {
           path="/my-contributions" 
           element={<ProtectedRoute><MyContributions /></ProtectedRoute>} 
         />
-        
         
         <Route 
           path="/profile" 

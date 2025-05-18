@@ -1,7 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Map from '../components/Map';
+import Sidebar from '../components/Sidebar';
 
 export default function Home() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const sidebarRef = useRef(null);
+
   useEffect(() => {
     // Add viewport meta tag dynamically for mobile optimization
     const metaViewport = document.createElement('meta');
@@ -83,31 +88,41 @@ export default function Home() {
 
   return (
     <>
-      <Map />
-      <main className="flex-1 bg-gray-100 dark:bg-gray-800 p-4 sm:p-8 font-body">
-        <h1 className="text-xl sm:text-2xl font-bold mb-4 dark:text-white text-center sm:text-left">
-          HBCU Universities Database
-        </h1>
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        isSidebarCollapsed={isSidebarCollapsed}
+        setIsSidebarCollapsed={setIsSidebarCollapsed}
+        sidebarRef={sidebarRef}
+        user={null}
+      />
+      <div className={`min-h-screen bg-gray-100 dark:bg-gray-800 transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
+        <Map />
+        <main className="p-4 sm:p-8 font-body">
+          <h1 className="text-xl sm:text-2xl font-bold mb-4 dark:text-white text-center sm:text-left">
+            HBCU Universities Database
+          </h1>
 
-        <div className="overflow-x-auto">
-          <table id="universityTable" className="w-full border-collapse text-left">
-            <thead>
-              <tr className="bg-blue-800 dark:bg-gray-900 text-white">
-                <th className="px-2 sm:px-4 py-2 w-10">#</th>
-                <th className="px-2 sm:px-4 py-2">College / University</th>
-                <th className="px-2 sm:px-4 py-2">URL</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800"></tbody>
-          </table>
-        </div>
-      </main>
+          <div className="overflow-x-auto">
+            <table id="universityTable" className="w-full border-collapse text-left">
+              <thead>
+                <tr className="bg-blue-800 dark:bg-gray-900 text-white">
+                  <th className="px-2 sm:px-4 py-2 w-10">#</th>
+                  <th className="px-2 sm:px-4 py-2">College / University</th>
+                  <th className="px-2 sm:px-4 py-2">URL</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white dark:bg-gray-800"></tbody>
+            </table>
+          </div>
+        </main>
 
-      <footer className="bg-blue-800 dark:bg-gray-900 text-white py-4 mt-4 px-4 text-sm sm:text-base">
-        <div className="container mx-auto text-center">
-          <p>&copy;2024 Copyright: All Rights Reserved by HBCUUSA</p>
-        </div>
-      </footer>
+        <footer className="bg-blue-800 dark:bg-gray-900 text-white py-4 mt-4 px-4 text-sm sm:text-base">
+          <div className="container mx-auto text-center">
+            <p>&copy;2024 Copyright: All Rights Reserved by HBCUUSA</p>
+          </div>
+        </footer>
+      </div>
     </>
   );
 }

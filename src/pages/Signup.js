@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import Sidebar from '../components/Sidebar';
 
 const Signup = () => {
   const [data, setData] = useState({ 
@@ -15,6 +16,9 @@ const Signup = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const sidebarRef = useRef(null);
   const navigate = useNavigate();
   const { signup, signInWithGoogle } = useAuth();
   const googleButtonRef = useRef(null);
@@ -81,6 +85,14 @@ const Signup = () => {
 
   return (
     <div className="flex flex-col h-screen">
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        isSidebarCollapsed={isSidebarCollapsed}
+        setIsSidebarCollapsed={setIsSidebarCollapsed}
+        sidebarRef={sidebarRef}
+        user={null}
+      />
       <main className="flex-1 flex justify-center items-center bg-gray-100 dark:bg-gray-800 font-body">
         <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md max-w-md w-full">
           <h1 className="text-2xl font-bold mb-6 text-center">Sign Up for More Opportunities</h1>
