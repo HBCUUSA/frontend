@@ -212,10 +212,13 @@ export function AuthProvider({ children }) {
         college
       });
       
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
-      setUser(response.data.user);
-      return { success: true };
+      // User now needs to verify email before logging in
+      // Do not set tokens or user data at this stage
+      return { 
+        success: true,
+        message: response.data.message || 'Registration successful! Please check your email to verify your account.',
+        requiresVerification: true
+      };
     } catch (error) {
       console.error("Signup error:", error);
       return { 
@@ -439,19 +442,61 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Email verification function
+  const verifyEmail = async (oobCode) => {
+    try {
+      const response = await axios.post(`${baseURL}/api/auth/verify-email`, {
+        oobCode
+      });
+      
+      return { 
+        success: true,
+        message: response.data.message || 'Email verified successfully. You can now log in.'
+      };
+    } catch (error) {
+      console.error("Email verification error:", error);
+      return { 
+        success: false, 
+        message: error.response?.data?.message || "Email verification failed" 
+      };
+    }
+  };
+  
+  // Resend verification email
+  const resendVerificationEmail = async (email) => {
+    try {
+      const response = await axios.post(`${baseURL}/api/auth/resend-verification`, {
+        email
+      });
+      
+      return { 
+        success: true,
+        message: response.data.message || 'Verification email sent. Please check your inbox.'
+      };
+    } catch (error) {
+      console.error("Resend verification error:", error);
+      return { 
+        success: false, 
+        message: error.response?.data?.message || "Failed to resend verification email" 
+      };
+    }
+  };
+
   const value = {
     user,
     loading,
-    login,
     signup,
+    login,
     logout,
-    getAuthHeader,
-    signInWithGoogle,
-    handleGoogleCallback,
     resetPassword,
+    signInWithGoogle,
+    getAuthHeader,
+    handleGoogleCallback,
     sendSignInLink,
     isSignInLink,
-    verifyMagicLink
+    verifyMagicLink,
+    verifyEmail,
+    resendVerificationEmail
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

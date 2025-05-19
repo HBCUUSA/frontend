@@ -71,7 +71,7 @@
         "description": "A summer program designed to introduce participants to the I-Corps methodology, fostering innovation and entrepreneurship skills.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://docs.google.com/forms/d/e/1FAIpQLSeiN8LfAPBQnc-Z-0qVVF9_UYsB7O09BsF3tfpjaNWBS_1S_Q/viewform",
-        "logo": "",
+        "logo": null,
         "category": "Startup",
         "programType": "Program"
     },
@@ -80,7 +80,7 @@
         "description": "Provides graduate fellowships and internships to underrepresented students pursuing advanced degrees in applied science and engineering.",
         "applicationDeadline": "Varies annually",
         "applicationLink": "https://www.gemfellowship.org/",
-        "logo": "img/gem_logo.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Fellowship"
     },
@@ -89,7 +89,7 @@
         "description": "The flagship program of the U.S. Government's Young African Leaders Initiative, bringing young African leaders to the U.S. for academic and leadership training.",
         "applicationDeadline": "September 10, 2024",
         "applicationLink": "https://www.mandelawashingtonfellowship.org/",
-        "logo": "img/mandela_washington_logo.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Fellowship"
     },
@@ -98,7 +98,7 @@
         "description": "Supports HBCUs in developing innovation ecosystems through making and innovation activities.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://www.aaas.org/programs/hbcu-making-and-innovation-initiative",
-        "logo": "img/aaas_hbcu_initiative_logo.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Initiative"
     },
@@ -107,7 +107,7 @@
         "description": "An annual conference hosted by Howard University & PNC National Center for Entrepreneurship to foster collaboration among entrepreneurs, investors, and scholars.",
         "applicationDeadline": "June 19, 2025",
         "applicationLink": "https://hupnccenter.howard.edu/hbcuempower/",
-        "logo": "img/hbcu_empower_logo.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Conference"
     },
@@ -116,7 +116,7 @@
         "description": "A nonprofit working to advance diversity, equity, and inclusion in clean energy and climate tech sectors.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://www.browningthegreenspace.org/about",
-        "logo": "img/bgs_logo.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Initiative"
     },
@@ -125,7 +125,7 @@
         "description": "Supports student ventures with up to $25,000 in grant funding, entrepreneurship training, and mentorship.",
         "applicationDeadline": "Sept 30, 2025",
         "applicationLink": "https://venturewell.org/e-team-program/",
-        "logo": "img/venturewell_logo.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Program"
     },
@@ -134,7 +134,7 @@
         "description": "A two-year fellowship at Oak Ridge National Laboratory for entrepreneurs focusing on energy and advanced manufacturing technologies.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://innovationcrossroads.ornl.gov/",
-        "logo": "img/innovation_crossroads_logo.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -143,7 +143,7 @@
         "description": "A two-year fellowship at Argonne National Laboratory for innovators focused on energy and science technologies.",
         "applicationDeadline": "Applications open Fall 2025",
         "applicationLink": "https://chainreaction.anl.gov/",
-        "logo": "img/chain_reaction_innovations_logo.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -152,7 +152,7 @@
         "description": "A two-year fellowship at NREL for scientists and engineers to commercialize promising technologies.",
         "applicationDeadline": "Applications open September 2025",
         "applicationLink": "https://www.nrel.gov/west-gate/apply",
-        "logo": "img/west_gate_logo.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -161,7 +161,7 @@
         "description": "Supports building technology innovators through training, mentorship, and access to national laboratories.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://impel.lbl.gov/",
-        "logo": "img/impel_logo.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Program"
     },
@@ -170,7 +170,7 @@
         "description": "A collaborative initiative to advance AI education and workforce development in Mississippi.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://www.mississippiai.org/",
-        "logo": "img/mississippi_ai_logo.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Initiative"
     },
@@ -179,7 +179,7 @@
         "description": "A fellowship program aimed at fostering innovation and entrepreneurship in Tennessee.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://launchtn.org/innovation-fellowship/",
-        "logo": "img/launchtn_logo.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -198,35 +198,8 @@
         "description": "A $1,350 scholarship for high school seniors in Warren County, North Carolina, planning to attend North Carolina A&T State University or North Carolina Central University.",
         "applicationDeadline": "5/3/2025",
         "applicationLink": "https://bold.org/scholarships/by-programType/HBCU-scholarships/",
-        "logo": null,
+        "logo": "img/WarrenCounty.png",
         "programType": "Scholarship",
-        "category": "HBCU"
-    },
-    {
-        "name": "Woodbridge VA State Burner's MC College Scholarship",
-        "description": "A $1,000 scholarship for high school seniors in Virginia planning to attend an HBCU.",
-        "applicationDeadline": "6/15/2025",
-        "applicationLink": "https://bold.org/scholarships/by-programType/HBCU-scholarships/",
-        "logo": null,
-        "programType": "Scholarship",
-        "category": "HBCU"
-    },
-    {
-        "name": "Columbia HBCU Fellowship Program",
-        "description": "A full-tuition scholarship for HBCU seniors or recent graduates pursuing a Master of Science at Columbia University, including housing, stipend, and mentorship opportunities.",
-        "applicationDeadline": "1/31/2025",
-        "applicationLink": "https://sps.columbia.edu/impact/columbia-hbcu-fellowship-program",
-        "logo": null,
-        "programType": "Fellowship",
-        "category": "HBCU"
-    },
-    {
-        "name": "Virginia Humanities HBCU Scholars Fellowship",
-        "description": "Fellowships ranging from $5,000 to $45,000 for HBCU alumni, faculty, or doctoral candidates conducting humanities-focused research.",
-        "applicationDeadline": null,
-        "applicationLink": "https://www.profellow.com/announcements/applications-now-open-2025-hbcu-scholars-fellowship-by-virginia-humanities/",
-        "logo": null,
-        "programType": "Fellowship",
         "category": "HBCU"
     },
     {
@@ -243,7 +216,7 @@
         "description": "$2,000 internship opportunity for undergraduate students at participating HBCUs with a minimum GPA of 2.5.",
         "applicationDeadline": "3/30/2025",
         "applicationLink": "https://www.fastweb.com/college-scholarships/articles/hbcu-scholarships",
-        "logo": null,
+        "logo": "img/cocaCola.png",
         "programType": "Internship",
         "category": "HBCU"
     },
@@ -252,7 +225,7 @@
         "description": "Scholarship for full-time undergraduate and graduate students at UNCF member colleges with a minimum GPA of 2.5.",
         "applicationDeadline": "3/31/2025",
         "applicationLink": "https://www.fastweb.com/college-scholarships/articles/hbcu-scholarships",
-        "logo": null,
+        "logo": "img/uncf.png",
         "programType": "Scholarship",
         "category": "HBCU"
     },
@@ -261,7 +234,7 @@
         "description": "$15,000 scholarship for full-time students at TMCF-member HBCUs with a minimum GPA of 2.7 and financial need.",
         "applicationDeadline": "4/15/2025",
         "applicationLink": "https://www.fastweb.com/college-scholarships/articles/hbcu-scholarships",
-        "logo": null,
+        "logo": "img/McDonald's_logo.png",
         "programType": "Scholarship",
         "category": "HBCU"
     },    
@@ -270,7 +243,7 @@
         "description": "A paid, full-time summer internship program for rising juniors and seniors from North Carolina's HBCUs with a minimum 2.8 GPA. Connects students with major corporations and businesses in the private sector throughout North Carolina. Benefits include hands-on experience, mentorship, skill development, potential for future employment, and a stipend. Open to all majors.",
         "applicationDeadline": "February 15, 2025",
         "applicationLink": "https://www.northcarolina.edu/offices-and-services/government-relations/north-carolina-governors-historically-black-colleges-and-universities-internship-program/",
-        "logo": null,
+        "logo": "img/NorthCaroline.svg",
         "programType": "Internship",
         "category": "HBCU"
     },
@@ -280,7 +253,7 @@
         "description": "A summer internship program with the North Carolina Department of Health and Human Services for students from HBCUs and Minority Serving Institutions. Offers in-person, hybrid, and remote positions with experiential and project-based options. Undergraduate interns earn $20/hour while graduate students earn $25/hour. Positions are 40 hours/week, Monday-Friday between 8am-5pm.",
         "applicationDeadline": "February 15, 2025",
         "applicationLink": "https://www.ncdhhs.gov/blog/2025/01/13/application-period-open-ncdhhs-hbcumsi-and-change-champion-internship-programs-summer-2025-cohort",
-        "logo": null,
+        "logo": "img/NCDHHS.png",
         "programType": "Internship",
         "category": "HBCU"
     },
@@ -290,7 +263,7 @@
         "description": "A $10,000 scholarship for students pursuing technology-related degrees at accredited HBCUs. Recipients also receive exclusive Splunk mentorship and an opportunity to interview for internships or early career roles. Applicants must be enrolled full-time with a minimum 3.0 GPA and submit a resume plus two essay responses.",
         "applicationDeadline": "February 15, 2025",
         "applicationLink": "https://www.splunk.com/en_us/blog/splunklife/splunk-s-hbcu-academic-scholarship.html",
-        "logo": null,
+        "logo": "img/splunkHBCU.avif",
         "programType": "Scholarship",
         "category": "HBCU"
     },
@@ -301,7 +274,7 @@
         "description": "A scholarship of up to $10,000 for outstanding students attending select HBCUs including Atlanta University Center Consortium, Hampton University, LeMoyne-Owen College, Morgan State University, North Carolina A&T, Tennessee State, Texas Southern, and Tuskegee University. Requires a 3.0+ GPA, demonstrated financial need, and U.S. citizenship or permanent residency.",
         "applicationDeadline": "March 15, 2025",
         "applicationLink": "https://www.tmcf.org/students-alumni/scholarship/tmcf-nike-hbcu-scholarship/",
-        "logo": null,
+        "logo": "img/nike.webp",
         "programType": "Scholarship",
         "category": "Sports"
     },
@@ -311,7 +284,7 @@
         "description": "A remote, 10-week paid internship program for HBCU students focused on the college-to-career journey. Participants work in pairs to build skills and grow their network. Benefits include community mentoring, skill-building, networking, career opportunities, and financial compensation.",
         "applicationDeadline": "January 15, 2025",
         "applicationLink": "https://hbcufirst.com/programs/hbcu-day-one-ready",
-        "logo": null,
+        "logo": "img/HBCU.jpeg",
         "programType": "Internship",
         "category": "HBCU"
     },
@@ -321,7 +294,7 @@
         "description": "A fellowship program for juniors at qualifying HBCUs providing exposure to education organizations specializing in policy, research, advocacy, teaching, and school operations in cities like Chicago, Boston, New York, Nashville, and Atlanta. Open to students of all majors.",
         "applicationDeadline": "November 15, 2025",
         "applicationLink": "https://www.bestcolleges.com/resources/hbcu/scholarships-and-grants/",
-        "logo": null,
+        "logo": "img/uncf.png",
         "programType": "Fellowship",
         "category": "HBCU"
     },
@@ -350,7 +323,7 @@
         "description": "A $10,000 scholarship for HBCU students. Part of the Congressional Black Caucus Foundation's scholarship offerings to support African American students pursuing higher education.",
         "applicationDeadline": "March 15, 2025",
         "applicationLink": "https://www.scholarships.com/financial-aid/college-scholarships/scholarship-directory/race/african-american",
-        "logo": null,
+        "logo": "img/HBCU.jpeg",
         "programType": "Scholarship",
         "category": "HBCU"
     }

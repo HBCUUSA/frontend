@@ -19,6 +19,10 @@ import PublicResumes from './pages/PublicResumes';
 import ResumeFeedbackPage from './pages/ResumeFeedbackPage';
 import GoogleCallback from './pages/GoogleCallback';
 import Mentor from './pages/Mentor';
+import VerifyEmail from './pages/VerifyEmail';
+import Privacy from './pages/Privacy';
+import Contact from './pages/Contact';
+import Terms from './pages/Terms';
 
 // Protected route component
 const ProtectedRoute = ({ children }) => {
@@ -51,7 +55,7 @@ function AppRoutes() {
   }
 
   // Define routes where Navbar should be hidden (these pages use Sidebar instead)
-  const hideNavbarRoutes = ['/landing', '/programs', '/', '/about', '/hbcu', '/experience'];
+  const hideNavbarRoutes = ['/landing', '/programs', '/', '/about', '/hbcu', '/experience', '/privacy', '/contact', '/terms'];
   const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   return (
@@ -67,6 +71,9 @@ function AppRoutes() {
         <Route path="/hbcu" element={<Hbcu />} />
         <Route path="/experience" element={<Experience />} />
         <Route path="/mentor" element={<Mentor />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/terms" element={<Terms />} />
 
         {/* Auth Routes - Only when not logged in */}
         <Route 
@@ -101,7 +108,7 @@ function AppRoutes() {
           path="/profile" 
           element={<ProtectedRoute><Profile /></ProtectedRoute>} 
         />
-       
+      
         <Route path="/resume" element={<Resume />} />
         
         {/* Resume Feedback Routes */}
@@ -118,6 +125,12 @@ function AppRoutes() {
         <Route 
           path="/auth/google/callback" 
           element={<GoogleCallback />} 
+        />
+        
+        {/* Verify Email Route */}
+        <Route 
+          path="/verify-email" 
+          element={<VerifyEmail />} 
         />
         
         {/* Fallback route */}

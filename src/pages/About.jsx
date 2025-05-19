@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/Sidebar';
+import Footer from '../components/Footer';
 import { useAuth } from '../context/AuthContext';
 
 export default function About() {
@@ -229,24 +230,7 @@ export default function About() {
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-gray-100 mt-20">
-          <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
-            <p className="text-gray-400 text-sm">
-              &copy; 2025 HBCUUSA. All Rights Reserved.
-            </p>
-            <div className="flex space-x-6">
-              <a href="#" className="text-gray-400 hover:text-gray-600">
-                Privacy
-              </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600">
-                Terms
-              </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600">
-                Contact
-              </a>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
 
       {/* Overlay for mobile sidebar */}

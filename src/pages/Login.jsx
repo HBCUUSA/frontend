@@ -16,9 +16,11 @@ const Login = () => {
   const [showMagicLinkForm, setShowMagicLinkForm] = useState(false);
   const [magicLinkEmail, setMagicLinkEmail] = useState("");
   const [verifyingMagicLink, setVerifyingMagicLink] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, signInWithGoogle, resetPassword, sendSignInLink, isSignInLink, verifyMagicLink } = useAuth();
+  const { login, signInWithGoogle, resetPassword, sendSignInLink, isSignInLink, verifyMagicLink, resendVerificationEmail } = useAuth();
   const googleButtonRef = useRef(null);
   const [googleButtonVisible, setGoogleButtonVisible] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
@@ -121,6 +123,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setNeedsVerification(false);
     
     try {
       const result = await login(data.email, data.password);
@@ -129,7 +132,14 @@ const Login = () => {
         // Redirect to programs page after successful login
         navigate('/programs');
       } else {
-        setError(result.message);
+        // Check if the error indicates that email needs verification
+        if (result.message?.includes('verify your email') || result.code === 'auth/email-not-verified') {
+          setNeedsVerification(true);
+          setUnverifiedEmail(data.email);
+          setError(result.message);
+        } else {
+          setError(result.message);
+        }
       }
     } catch (error) {
       setError("An unexpected error occurred. Please try again.");
@@ -224,6 +234,31 @@ const Login = () => {
     } catch (error) {
       console.error('Magic link error:', error);
       setError("Failed to send magic link. Please check your email address.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendVerification = async () => {
+    if (!unverifiedEmail) {
+      setError("Email address is missing. Please enter your email and try again.");
+      return;
+    }
+    
+    setLoading(true);
+    setError("");
+    setSuccess("");
+    
+    try {
+      const result = await resendVerificationEmail(unverifiedEmail);
+      if (result.success) {
+        setSuccess(result.message || "Verification email has been resent. Please check your inbox.");
+      } else {
+        setError(result.message || "Failed to resend verification email.");
+      }
+    } catch (error) {
+      console.error("Resend verification error:", error);
+      setError("Failed to resend verification email. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -372,6 +407,31 @@ const Login = () => {
                 </button>
               </div>
             </form>
+          ) : needsVerification ? (
+            <div className="space-y-6">
+              <div className="p-3 mb-4 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-lg text-sm border border-amber-200 dark:border-amber-800">
+                {error}
+              </div>
+              
+              <div className="flex flex-col space-y-4">
+                <button
+                  onClick={handleResendVerification}
+                  disabled={loading}
+                  className={`w-full bg-blue-500 dark:bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    loading ? 'opacity-70 cursor-not-allowed' : ''
+                  }`}
+                >
+                  {loading ? 'Sending...' : 'Resend Verification Email'}
+                </button>
+                
+                <button
+                  onClick={() => setNeedsVerification(false)}
+                  className="w-full bg-white dark:bg-gray-800 text-blue-500 dark:text-blue-300 py-2 px-4 rounded-md border border-blue-500 dark:border-blue-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  Back to Login
+                </button>
+              </div>
+            </div>
           ) : (
             <>
               <form id="login-form" className="space-y-6" onSubmit={handleSubmit}>

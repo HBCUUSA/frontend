@@ -6,7 +6,33 @@ import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
 
-const baseURL = process.env.REACT_APP_BASE_URL
+// Define fallback testimonial data
+const MOCK_TESTIMONIALS = [
+  {
+    id: 'm1',
+    title: 'My Internship at Google',
+    programName: 'Tech Connect Program',
+    thumbnailUrl: '/img/testimonial-1.jpg',
+    videoUrl: 'https://example.com/videos/testimonial1.mp4',
+  },
+  {
+    id: 'm2',
+    title: 'How HBCUUSA Changed My Career Path',
+    programName: 'Leadership Development',
+    thumbnailUrl: '/img/testimonial-2.jpg',
+    videoUrl: 'https://example.com/videos/testimonial2.mp4',
+  },
+  {
+    id: 'm3',
+    title: 'From Student to Full-Time Software Engineer',
+    programName: 'Software Engineering Track',
+    thumbnailUrl: '/img/testimonial-3.jpg',
+    videoUrl: 'https://example.com/videos/testimonial3.mp4',
+  }
+];
+
+const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
+
 const Experience = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -29,10 +55,20 @@ const Experience = () => {
       try {
         setLoading(true);
         const response = await axios.get(`${baseURL}/api/testimonials?limit=6`);
-        setTestimonials(response.data.testimonials);
+        
+        // Check if response has data and testimonials
+        if (response.data && response.data.testimonials && response.data.testimonials.length > 0) {
+          setTestimonials(response.data.testimonials);
+        } else {
+          // Use mock data if no testimonials are available from API
+          console.log('No testimonials returned from API, using mock data.');
+          setTestimonials(MOCK_TESTIMONIALS);
+        }
       } catch (err) {
         console.error("Error fetching testimonials:", err);
-        setError("Failed to load testimonials. Please try again later.");
+        setError("Failed to load testimonials. Using sample stories instead.");
+        // Use mock data on error
+        setTestimonials(MOCK_TESTIMONIALS);
       } finally {
         setLoading(false);
       }
@@ -249,7 +285,7 @@ const Experience = () => {
                   </button>
                 </div>
               </div>
-            ) : testimonials.length > 0 ? (
+            ) : testimonials && testimonials.length > 0 ? (
               <div className="relative mb-20" ref={carouselRef}>
                 {/* Main Carousel */}
                 <div className="relative w-full overflow-hidden rounded-xl shadow-lg bg-gray-900 aspect-video">
@@ -279,9 +315,13 @@ const Experience = () => {
                           onClick={() => handleVideoSelect(testimonial.id)}
                         >
                           <img 
-                            src={testimonial.thumbnailUrl || '/img/default-thumbnail.jpg'} 
+                            src={testimonial.thumbnailUrl || `/img/default-testimonial-${index % 3 + 1}.jpg`} 
                             alt={testimonial.title || "Student Testimonial"}
                             className="w-full h-full object-cover brightness-75"
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src = '/img/default-thumbnail.jpg';
+                            }}
                           />
                           <div className="absolute inset-0 flex flex-col items-center justify-center">
                             <div className="bg-white bg-opacity-90 rounded-full p-5 mb-6 transform transition-transform duration-300 group-hover:scale-110 shadow-lg">
@@ -344,9 +384,13 @@ const Experience = () => {
                       onClick={() => setCurrentSlide(index)}
                     >
                       <img 
-                        src={testimonial.thumbnailUrl || '/img/default-thumbnail.jpg'} 
+                        src={testimonial.thumbnailUrl || `/img/default-testimonial-${index % 3 + 1}.jpg`} 
                         alt={testimonial.title || "Thumbnail"}
                         className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/img/default-thumbnail.jpg';
+                        }}
                       />
                     </button>
                   ))}
@@ -377,24 +421,7 @@ const Experience = () => {
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-gray-100 mt-20">
-          <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
-            <p className="text-gray-400 text-sm">
-              &copy; 2025 HBCUUSA. All Rights Reserved.
-            </p>
-            <div className="flex space-x-6">
-              <a href="#" className="text-gray-400 hover:text-gray-600">
-                Privacy
-              </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600">
-                Terms
-              </a>
-              <a href="#" className="text-gray-400 hover:text-gray-600">
-                Contact
-              </a>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
 
       {/* Overlay for mobile sidebar */}
