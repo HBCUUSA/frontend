@@ -399,6 +399,46 @@ export function AuthProvider({ children }) {
     }
   };
 
+  // Check if a URL is a sign-in link
+  const isSignInLink = (url) => {
+    // This is a helper that checks if a URL contains magic link parameters
+    // Firebase sends links with parameters like mode=signIn, oobCode=xxx
+    return url && 
+      (url.includes('mode=signIn') || 
+       url.includes('mode=verifyEmail') || 
+       url.includes('apn=') || 
+       url.includes('oobCode='));
+  };
+
+  // Verify magic link sign-in
+  const verifyMagicLink = async (email, url) => {
+    try {
+      const response = await axios.post(`${baseURL}/api/auth/verify-magic-link`, {
+        email,
+        link: url
+      });
+      
+      // Store token and user data
+      const { token, user } = response.data;
+      
+      if (!token) {
+        throw new Error("No token received from server");
+      }
+      
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      setUser(user);
+      
+      return { success: true, user };
+    } catch (error) {
+      console.error("Magic link verification error:", error);
+      return { 
+        success: false, 
+        message: error.response?.data?.message || "Failed to verify magic link" 
+      };
+    }
+  };
+
   const value = {
     user,
     loading,
@@ -409,7 +449,9 @@ export function AuthProvider({ children }) {
     signInWithGoogle,
     handleGoogleCallback,
     resetPassword,
-    sendSignInLink
+    sendSignInLink,
+    isSignInLink,
+    verifyMagicLink
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

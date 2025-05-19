@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FiEye, FiEyeOff, FiMail, FiLock } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
 import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
 
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -14,15 +15,73 @@ const Login = () => {
   const [resetEmail, setResetEmail] = useState("");
   const [showMagicLinkForm, setShowMagicLinkForm] = useState(false);
   const [magicLinkEmail, setMagicLinkEmail] = useState("");
+  const [verifyingMagicLink, setVerifyingMagicLink] = useState(false);
   const navigate = useNavigate();
-  const { login, signInWithGoogle, resetPassword, sendSignInLink } = useAuth();
+  const location = useLocation();
+  const { login, signInWithGoogle, resetPassword, sendSignInLink, isSignInLink, verifyMagicLink } = useAuth();
   const googleButtonRef = useRef(null);
   const [googleButtonVisible, setGoogleButtonVisible] = useState(false);
+  const baseURL = process.env.REACT_APP_BASE_URL;
+
+  // Check for magic link verification on component mount
+  useEffect(() => {
+    const checkForMagicLink = async () => {
+      // Check if the current URL contains a sign-in link
+      if (isSignInLink(window.location.href)) {
+        setVerifyingMagicLink(true);
+        setLoading(true);
+        
+        // Get the email from localStorage (saved when sending the link)
+        let email = window.localStorage.getItem('emailForSignIn');
+        
+        if (!email) {
+          // If we can't find the email, prompt the user for it
+          email = window.prompt('Please provide your email for confirmation');
+        }
+        
+        if (!email) {
+          setError('Email is required to complete sign-in.');
+          setLoading(false);
+          setVerifyingMagicLink(false);
+          return;
+        }
+        
+        try {
+          // Verify the magic link with our AuthContext method
+          const result = await verifyMagicLink(email, window.location.href);
+          
+          if (result.success) {
+            // Clear the emailForSignIn from localStorage
+            localStorage.removeItem('emailForSignIn');
+            
+            // Show success message and redirect
+            setSuccess('You have been successfully signed in!');
+            setTimeout(() => {
+              navigate('/programs');
+            }, 1500);
+          } else {
+            setError(result.message || 'Failed to verify the magic link.');
+          }
+        } catch (error) {
+          console.error('Magic link verification error:', error);
+          setError('Failed to verify the magic link. It may have expired or is invalid.');
+        } finally {
+          setLoading(false);
+          setVerifyingMagicLink(false);
+          
+          // Remove the query parameters from the URL to prevent re-verification on refresh
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+      }
+    };
+    
+    checkForMagicLink();
+  }, [navigate, isSignInLink, verifyMagicLink]);
 
   // Initialize Google Sign-In button only when not in reset password flow
   useEffect(() => {
     // Only attempt to render Google button when on main login screen
-    if (showResetForm || showMagicLinkForm) return;
+    if (showResetForm || showMagicLinkForm || verifyingMagicLink) return;
     
     // Set a timeout to ensure the DOM is fully loaded
     const timer = setTimeout(() => {
@@ -52,7 +111,7 @@ const Login = () => {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [googleButtonRef.current, showResetForm, showMagicLinkForm]);
+  }, [googleButtonRef.current, showResetForm, showMagicLinkForm, verifyingMagicLink]);
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
@@ -136,20 +195,34 @@ const Login = () => {
 
   const handleMagicLink = async (e) => {
     e.preventDefault();
+    
+    // Validate email
+    if (!magicLinkEmail || !magicLinkEmail.trim()) {
+      setError("Please enter your email address");
+      return;
+    }
+    
     setLoading(true);
     setError("");
     setSuccess("");
     
     try {
-      await sendSignInLink(magicLinkEmail, window.location.href);
+      // Call the sendSignInLink function with the current URL as the redirect URL
+      // Add the protocol and host to make it an absolute URL
+      const redirectUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+      
+      await sendSignInLink(magicLinkEmail, redirectUrl);
+      
       // Save the email to localStorage to use it later when the user clicks the link
       window.localStorage.setItem('emailForSignIn', magicLinkEmail);
+      
       setSuccess("Magic link sent! Check your email to sign in.");
       setTimeout(() => {
         setShowMagicLinkForm(false);
         setSuccess("");
       }, 5000);
     } catch (error) {
+      console.error('Magic link error:', error);
       setError("Failed to send magic link. Please check your email address.");
     } finally {
       setLoading(false);
@@ -172,7 +245,26 @@ const Login = () => {
             </div>
           )}
 
-          {showResetForm ? (
+          {verifyingMagicLink ? (
+            <div className="space-y-6 text-center">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Verifying Magic Link</h2>
+              <div className="flex flex-col items-center justify-center py-6">
+                <svg className="animate-spin h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p className="mt-4 text-gray-600 dark:text-gray-400">
+                  Verifying your sign-in link...
+                </p>
+              </div>
+              
+              {error && (
+                <div className="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm border border-red-200 dark:border-red-800 transition-all duration-300">
+                  {error}
+                </div>
+              )}
+            </div>
+          ) : showResetForm ? (
             <form className="space-y-6" onSubmit={handleResetPassword}>
               <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Reset Your Password</h2>
               <div className="relative">
