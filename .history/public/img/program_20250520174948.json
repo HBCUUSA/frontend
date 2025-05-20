@@ -161,7 +161,7 @@
         "description": "Supports building technology innovators through training, mentorship, and access to national laboratories.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://impel.lbl.gov/",
-        "logo": "img/impel.jpeg",
+        "logo": "/img/impel.jpeg",
         "category": "Startup",
         "programType": "Program"
     },
@@ -170,7 +170,7 @@
         "description": "A collaborative initiative to advance AI education and workforce development in Mississippi.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://www.mississippiai.org/",
-        "logo": "img/missi.png",
+        "logo": "/img/missi.png",
         "category": "HBCU",
         "programType": "Initiative"
     },
@@ -179,7 +179,7 @@
         "description": "A fellowship program aimed at fostering innovation and entrepreneurship in Tennessee.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://launchtn.org/innovation-fellowship/",
-        "logo":"img/launchTen.png",
+        "logo":"/img/launchTen.png",
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -188,7 +188,7 @@
         "description": "A survey initiative by RTI International to gather insights on innovation and entrepreneurship.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://redcapedc.rti.org/seed/surveys/?s=g6XRAH9DguKahudS",
-        "logo": "img/NIH-Logo.jpg",
+        "logo": "/img/NIH-Logo.jpg",
         "category": "Startup",
         "programType": "Survey"
     },      
@@ -207,7 +207,7 @@
         "description": "A full-tuition scholarship for full-time juniors and seniors attending HBCUs with a minimum 3.5 GPA and financial need.",
         "applicationDeadline": "3/15/2025",
         "applicationLink": "https://www.fastweb.com/college-scholarships/articles/hbcu-scholarships",
-        "logo": "img/fastweb.png",
+        "logo": "/img",
         "programType": "Scholarship",
         "category": "HBCU"
     },
@@ -303,7 +303,7 @@
         "description": "A scholarship supporting students at five specific HBCUs: Lincoln University, Norfolk State University, Bennett College, University of Arkansas at Pine Bluff, and Central State University. Targets students majoring in creative fields such as media and visual arts with at least a 2.0 GPA. Priority given to students with financial hardship.",
         "applicationDeadline": "July 15, 2025",
         "applicationLink": "https://www.bestcolleges.com/resources/hbcu/scholarships-and-grants/",
-        "logo": "img/bc.webp",
+        "logo": null,
         "programType": "Scholarship",
         "category": "HBCU"
     },
@@ -313,7 +313,7 @@
         "description": "Paid 10-12 week summer internships with major companies and government agencies. Interns work in various locations across the United States conducting research and/or contributing to organizational enterprises. Includes participation in career readiness workshops and webinars.",
         "applicationDeadline": "February 15, 2025",
         "applicationLink": "https://www.tmcf.org/students-alumni/internships/",
-        "logo": "img/tmcf.png",
+        "logo": null,
         "programType": "Internship",
         "category": "HBCU"
     },
