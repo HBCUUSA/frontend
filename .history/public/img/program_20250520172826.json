@@ -71,7 +71,7 @@
         "description": "A summer program designed to introduce participants to the I-Corps methodology, fostering innovation and entrepreneurship skills.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://docs.google.com/forms/d/e/1FAIpQLSeiN8LfAPBQnc-Z-0qVVF9_UYsB7O09BsF3tfpjaNWBS_1S_Q/viewform",
-        "logo": "/img/jsu.jpg",
+        "logo": "img/JacksonState",
         "category": "Startup",
         "programType": "Program"
     },
@@ -80,7 +80,7 @@
         "description": "Provides graduate fellowships and internships to underrepresented students pursuing advanced degrees in applied science and engineering.",
         "applicationDeadline": "Varies annually",
         "applicationLink": "https://www.gemfellowship.org/",
-        "logo": "/img/gem-logo-color-01.webp",
+        "logo": null,
         "category": "HBCU",
         "programType": "Fellowship"
     },
@@ -89,7 +89,7 @@
         "description": "The flagship program of the U.S. Government's Young African Leaders Initiative, bringing young African leaders to the U.S. for academic and leadership training.",
         "applicationDeadline": "September 10, 2024",
         "applicationLink": "https://www.mandelawashingtonfellowship.org/",
-        "logo": "/img/MandelaWF.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Fellowship"
     },
@@ -98,7 +98,7 @@
         "description": "Supports HBCUs in developing innovation ecosystems through making and innovation activities.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://www.aaas.org/programs/hbcu-making-and-innovation-initiative",
-        "logo":"/img/aaas.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Initiative"
     },
@@ -107,7 +107,7 @@
         "description": "An annual conference hosted by Howard University & PNC National Center for Entrepreneurship to foster collaboration among entrepreneurs, investors, and scholars.",
         "applicationDeadline": "June 19, 2025",
         "applicationLink": "https://hupnccenter.howard.edu/hbcuempower/",
-        "logo": "/img/howard.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Conference"
     },
@@ -116,7 +116,7 @@
         "description": "A nonprofit working to advance diversity, equity, and inclusion in clean energy and climate tech sectors.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://www.browningthegreenspace.org/about",
-        "logo": "/img/bgs.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Initiative"
     },
@@ -125,7 +125,7 @@
         "description": "Supports student ventures with up to $25,000 in grant funding, entrepreneurship training, and mentorship.",
         "applicationDeadline": "Sept 30, 2025",
         "applicationLink": "https://venturewell.org/e-team-program/",
-        "logo": "/img/venturewell.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Program"
     },
@@ -134,7 +134,7 @@
         "description": "A two-year fellowship at Oak Ridge National Laboratory for entrepreneurs focusing on energy and advanced manufacturing technologies.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://innovationcrossroads.ornl.gov/",
-        "logo": "/img/ORNL.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -143,7 +143,7 @@
         "description": "A two-year fellowship at Argonne National Laboratory for innovators focused on energy and science technologies.",
         "applicationDeadline": "Applications open Fall 2025",
         "applicationLink": "https://chainreaction.anl.gov/",
-        "logo": "/img/CRI.webp",
+        "logo": null,
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -152,7 +152,7 @@
         "description": "A two-year fellowship at NREL for scientists and engineers to commercialize promising technologies.",
         "applicationDeadline": "Applications open September 2025",
         "applicationLink": "https://www.nrel.gov/west-gate/apply",
-        "logo": "/img/NREL.jpg",
+        "logo": null,
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -161,7 +161,7 @@
         "description": "Supports building technology innovators through training, mentorship, and access to national laboratories.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://impel.lbl.gov/",
-        "logo": "img/impel.jpeg",
+        "logo": null,
         "category": "Startup",
         "programType": "Program"
     },
@@ -170,7 +170,7 @@
         "description": "A collaborative initiative to advance AI education and workforce development in Mississippi.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://www.mississippiai.org/",
-        "logo": "img/missi.png",
+        "logo": null,
         "category": "HBCU",
         "programType": "Initiative"
     },
@@ -179,7 +179,7 @@
         "description": "A fellowship program aimed at fostering innovation and entrepreneurship in Tennessee.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://launchtn.org/innovation-fellowship/",
-        "logo":"img/launchTen.png",
+        "logo": null,
         "category": "Startup",
         "programType": "Fellowship"
     },
@@ -188,7 +188,7 @@
         "description": "A survey initiative by RTI International to gather insights on innovation and entrepreneurship.",
         "applicationDeadline": "Not specified",
         "applicationLink": "https://redcapedc.rti.org/seed/surveys/?s=g6XRAH9DguKahudS",
-        "logo": "img/NIH-Logo.jpg",
+        "logo": "",
         "category": "Startup",
         "programType": "Survey"
     },      
@@ -207,7 +207,7 @@
         "description": "A full-tuition scholarship for full-time juniors and seniors attending HBCUs with a minimum 3.5 GPA and financial need.",
         "applicationDeadline": "3/15/2025",
         "applicationLink": "https://www.fastweb.com/college-scholarships/articles/hbcu-scholarships",
-        "logo": "img/fastweb.png",
+        "logo": null,
         "programType": "Scholarship",
         "category": "HBCU"
     },
@@ -303,7 +303,7 @@
         "description": "A scholarship supporting students at five specific HBCUs: Lincoln University, Norfolk State University, Bennett College, University of Arkansas at Pine Bluff, and Central State University. Targets students majoring in creative fields such as media and visual arts with at least a 2.0 GPA. Priority given to students with financial hardship.",
         "applicationDeadline": "July 15, 2025",
         "applicationLink": "https://www.bestcolleges.com/resources/hbcu/scholarships-and-grants/",
-        "logo": "img/bc.webp",
+        "logo": null,
         "programType": "Scholarship",
         "category": "HBCU"
     },
@@ -313,7 +313,7 @@
         "description": "Paid 10-12 week summer internships with major companies and government agencies. Interns work in various locations across the United States conducting research and/or contributing to organizational enterprises. Includes participation in career readiness workshops and webinars.",
         "applicationDeadline": "February 15, 2025",
         "applicationLink": "https://www.tmcf.org/students-alumni/internships/",
-        "logo": "img/tmcf.png",
+        "logo": null,
         "programType": "Internship",
         "category": "HBCU"
     },
