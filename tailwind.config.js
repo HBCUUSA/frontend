@@ -10,6 +10,7 @@ module.exports = {
     extend: {
 
       fontFamily: {
+        sans: ['Lexend Deca', 'sans-serif'],
         body: ['Lexend Deca'],
       },
     },

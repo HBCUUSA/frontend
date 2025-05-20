@@ -55,7 +55,8 @@ function AppRoutes() {
   }
 
   // Define routes where Navbar should be hidden (these pages use Sidebar instead)
-  const hideNavbarRoutes = ['/landing', '/programs', '/', '/about', '/hbcu', '/experience', '/privacy', '/contact', '/terms'];
+  const hideNavbarRoutes = ['/landing', '/programs', '/', '/about', '/hbcu', '/experience', '/privacy', '/contact', '/terms','/contribute',
+    '/my-contributions','/profile', '/resume', '/public-resumes','/mentor','/resume-feedback','/login','/signup'];
   const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
 
   return (

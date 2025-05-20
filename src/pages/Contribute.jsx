@@ -1,19 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
-const baseURL = process.env.REACT_APP_BASE_URL
+import Sidebar from '../components/Sidebar';
+import Footer from '../components/Footer';
+const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
 
 const Contribute = () => {
-  const { user, getAuthHeader } = useAuth();
+  const { user, getAuthHeader, logout } = useAuth();
+  const navigate = useNavigate();
   const [data, setData] = useState({ name: "", website: "", description: "" });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const [loginPrompt, setLoginPrompt] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const sidebarRef = useRef(null);
+  const profileDropdownRef = useRef(null);
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
+  };
+
+  // Close profile dropdown if clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -54,86 +86,212 @@ const Contribute = () => {
   };
 
   return (
-    <>
-      <div className="flex flex-col min-h-screen">
-        <main className="flex-1 bg-gray-100 dark:bg-gray-800 p-8 font-body">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md mb-8">
-              <h1 className="text-2xl font-bold mb-6 text-center dark:text-white">Contribute by adding a program</h1>
+    <div className="relative min-h-screen bg-white flex">
+      {/* Subtle Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-blue-50 opacity-70"></div>
+      
+      {/* Sidebar */}
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        isSidebarCollapsed={isSidebarCollapsed}
+        setIsSidebarCollapsed={setIsSidebarCollapsed}
+        sidebarRef={sidebarRef}
+        user={user}
+      />
+      
+      {/* Main Content */}
+      <div className={`relative z-10 flex-1`}>
+        {/* Header */}
+        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 w-full">
+          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div className="flex items-center">
+              {/* Sidebar toggle for mobile */}
+              <button
+                className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  {isSidebarOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
               
-              {loginPrompt && !user && (
-                <div className="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 text-yellow-800 dark:text-yellow-200 rounded">
-                  <p>You need to be logged in to contribute.</p>
-                  <Link to="/login" className="text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
-                    Go to Login
-                  </Link>
-                </div>
-              )}
-              
-              {user && (
-                <div className="mb-4 p-3 bg-blue-100 dark:bg-blue-900 border border-blue-400 text-blue-800 dark:text-blue-200 rounded">
-                  <p>Want to see your previous contributions?</p>
-                  <Link to="/my-contributions" className="text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
-                    View My Contributions
-                  </Link>
-                </div>
-              )}
-              
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block mb-1 dark:text-gray-300">Program Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Fellowship or program name..."
-                    onChange={handleChange}
-                    value={data.name}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-                    required
+              {/* Logo */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1 }}
+                className="pl-2"
+              >
+                <Link to="/">
+                  <img 
+                    src="/img/logo-no-background.png" 
+                    alt="HBCU Logo" 
+                    className="w-40 h-auto"
                   />
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* Navigation Links */}
+            <div className="flex items-center space-x-6">
+              {/* Show user profile when logged in */}
+              {user ? (
+                <div className="relative" ref={profileDropdownRef}>
+                  <button 
+                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)} 
+                    className="focus:outline-none"
+                  >
+                    <img
+                      src={user.photoURL || "/default-avatar.png"} // Profile pic or default
+                      alt="Profile"
+                      className="w-10 h-10 rounded-full border-2 border-gray-300"
+                    />
+                  </button>
+
+                  {isProfileDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
+                      {/* User Info */}
+                      <div className="px-4 py-2 text-gray-900 border-b border-gray-200">
+                        <p className="font-semibold">{user.displayName || "User"}</p>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+
+                      {/* Profile Link */}
+                      <Link 
+                        to="/profile" 
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                      >
+                        View Profile
+                      </Link>
+
+                      {/* Logout Button */}
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsProfileDropdownOpen(false);
+                        }}
+                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <label htmlFor="website" className="block mb-1 dark:text-gray-300">Program Website</label>
-                  <input
-                    type="text"
-                    id="website"
-                    name="website"
-                    placeholder="Website URL (e.g., https://example.com)..."
-                    onChange={handleChange}
-                    value={data.website}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="description" className="block mb-1 dark:text-gray-300">Program Description</label>
-                  <textarea
-                    id="description"
-                    name="description"
-                    placeholder="Describe the program, eligibility requirements, application process, etc..."
-                    onChange={handleChange}
-                    value={data.description}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-                    style={{ height: '200px' }}
-                    required
-                  ></textarea>
-                </div>
-                {error && <div className="text-red-500">{error}</div>}
-                {success && <div className="text-green-500">{success}</div>}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
-                >
-                  {loading ? 'Submitting...' : 'Submit Contribution'}
-                </button>
-              </form>
+              ) : (
+                <>
+                  <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors">
+                    Log In
+                  </Link>
+                  <Link to="/signup">
+                    <button className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
+                      Sign Up
+                    </button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
-        </main>
+        </header>
+        
+        {/* Page Content */}
+        <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
+          <main className="flex-1 p-8 font-body">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md mb-8">
+                <h1 className="text-2xl font-bold mb-6 text-center dark:text-white">Contribute by adding a program</h1>
+                
+                {loginPrompt && !user && (
+                  <div className="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 text-yellow-800 dark:text-yellow-200 rounded">
+                    <p>You need to be logged in to contribute.</p>
+                    <Link to="/login" className="text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
+                      Go to Login
+                    </Link>
+                  </div>
+                )}
+                
+                {user && (
+                  <div className="mb-4 p-3 bg-blue-100 dark:bg-blue-900 border border-blue-400 text-blue-800 dark:text-blue-200 rounded">
+                    <p>Want to see your previous contributions?</p>
+                    <Link to="/my-contributions" className="text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
+                      View My Contributions
+                    </Link>
+                  </div>
+                )}
+                
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label htmlFor="name" className="block mb-1 dark:text-gray-300">Program Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Fellowship or program name..."
+                      onChange={handleChange}
+                      value={data.name}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="website" className="block mb-1 dark:text-gray-300">Program Website</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      placeholder="Website URL (e.g., https://example.com)..."
+                      onChange={handleChange}
+                      value={data.website}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="description" className="block mb-1 dark:text-gray-300">Program Description</label>
+                    <textarea
+                      id="description"
+                      name="description"
+                      placeholder="Describe the program, eligibility requirements, application process, etc..."
+                      onChange={handleChange}
+                      value={data.description}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                      style={{ height: '200px' }}
+                      required
+                    ></textarea>
+                  </div>
+                  {error && <div className="text-red-500">{error}</div>}
+                  {success && <div className="text-green-500">{success}</div>}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                  >
+                    {loading ? 'Submitting...' : 'Submit Contribution'}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        {/* Footer */}
+        {/* <Footer /> */}
       </div>
-    </>
+
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
+    </div>
   );
 };
 

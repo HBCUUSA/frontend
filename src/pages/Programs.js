@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import AuthContext
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
+import CategoryFilter from "../components/CategoryFilter"; // Import the new component
 
 const FilterDropdown = ({ filters, onApplyFilters }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -138,7 +140,8 @@ const Programs = () => {
     month: "",
     university: "",
     programType: "",
-    citizenship: ""
+    citizenship: "",
+    category: "All" // Add category filter
   });
   const [filteredPrograms, setFilteredPrograms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -146,6 +149,7 @@ const Programs = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // Start collapsed
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false); // For user profile dropdown
   const [showScrollTop, setShowScrollTop] = useState(false); // For scroll to top button
+  const [categories, setCategories] = useState(['Sports', 'HBCU', 'Startup']); // Available categories
   const sidebarRef = useRef(null);
   const profileDropdownRef = useRef(null);
 
@@ -209,6 +213,10 @@ const Programs = () => {
         if (!response.ok) throw new Error('Failed to fetch programs');
         const data = await response.json();
         
+        // Extract unique categories
+        const uniqueCategories = [...new Set(data.filter(program => program.category).map(program => program.category))];
+        setCategories(uniqueCategories);
+        
         // Process the data to handle potential missing fields
         const processedData = data.map(program => ({
           ...program,
@@ -221,7 +229,9 @@ const Programs = () => {
           programType: program.programType || "Scholarship",
           // Set default university and citizenship
           university: program.university || "",
-          citizenship: program.citizenship || ""
+          citizenship: program.citizenship || "",
+          // Ensure category is set
+          category: program.category || "Other"
         }));
         
         setPrograms(processedData);
@@ -244,7 +254,8 @@ const Programs = () => {
         (filters.month === "" || program.applicationMonth === filters.month) &&
         (filters.university === "" || program.university === filters.university) &&
         (filters.programType === "" || program.programType === filters.programType) &&
-        (filters.citizenship === "" || program.citizenship === filters.citizenship)
+        (filters.citizenship === "" || program.citizenship === filters.citizenship) &&
+        (filters.category === "All" || program.category === filters.category)
       ));
     }
   }, [searchTerm, filters, programs]);
@@ -255,7 +266,8 @@ const Programs = () => {
         month: "",
         university: "",
         programType: "",
-        citizenship: ""
+        citizenship: "",
+        category: "All" // Reset category to All
       });
     } else {
       setFilters({
@@ -263,6 +275,11 @@ const Programs = () => {
         [filterType]: value
       });
     }
+  };
+
+  // Handle category selection
+  const handleCategorySelect = (category) => {
+    handleFilterChange('category', category);
   };
 
   return (
@@ -282,109 +299,17 @@ const Programs = () => {
       
       {/* Main Content */}
       <div className={`relative z-10 flex-1`}>
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 w-full">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div className="flex items-center">
-              {/* Sidebar toggle for mobile */}
-              <button
-                className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  {isSidebarOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-              
-              {/* Logo */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1 }}
-                className="pl-2"
-              >
-                <Link to="/">
-                  <img 
-                    src="/img/logo-no-background.png" 
-                    alt="HBCU Logo" 
-                    className="w-40 h-auto"
-                  />
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Navigation Links */}
-            <div className="flex items-center space-x-6">
-              {/* Show user profile when logged in */}
-              {user ? (
-                <div className="relative" ref={profileDropdownRef}>
-                  <button 
-                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)} 
-                    className="focus:outline-none"
-                  >
-                    <img
-                      src={user.photoURL || "/default-avatar.png"} // Profile pic or default
-                      alt="Profile"
-                      className="w-10 h-10 rounded-full border-2 border-gray-300"
-                    />
-                  </button>
-
-                  {isProfileDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-                      {/* User Info */}
-                      <div className="px-4 py-2 text-gray-900 border-b border-gray-200">
-                        <p className="font-semibold">{user.displayName || "User"}</p>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                      </div>
-
-                      {/* Profile Link */}
-                      <Link 
-                        to="/profile" 
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        onClick={() => setIsProfileDropdownOpen(false)}
-                      >
-                        View Profile
-                      </Link>
-
-                      {/* Logout Button */}
-                      <button
-                        onClick={() => {
-                          handleLogout();
-                          setIsProfileDropdownOpen(false);
-                        }}
-                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors">
-                    Log In
-                  </Link>
-                  <Link to="/signup">
-                    <button className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
-                      Sign Up
-                    </button>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </header>
+        {/* Header - Using Navbar Component */}
+        <Navbar 
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
 
         {/* Page Content */}
         <main className="max-w-6xl mx-auto px-6 py-16">
           {/* Page Title */}
           <motion.div 
-            className="text-center mb-16"
+            className="text-center mb-10"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -395,6 +320,20 @@ const Programs = () => {
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Find opportunities that align with your interests and career goals.
             </p>
+          </motion.div>
+
+          {/* Category Filter - Moved to be centered above search bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="max-w-3xl mx-auto mb-8"
+          >
+            <CategoryFilter 
+              categories={categories}
+              selectedCategory={filters.category}
+              onSelectCategory={handleCategorySelect}
+            />
           </motion.div>
 
           {/* Search and Filter Bar */}
@@ -420,11 +359,11 @@ const Programs = () => {
               <FilterDropdown filters={filters} onApplyFilters={handleFilterChange} />
             </div>
 
-            {/* Active Filters */}
-            {Object.values(filters).some(value => value !== "") && (
+            {/* Active Filters (excluding category which is handled separately) */}
+            {Object.entries(filters).some(([key, value]) => key !== 'category' && value !== "") && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {Object.entries(filters).map(([key, value]) => 
-                  value && (
+                  key !== 'category' && value && (
                     <motion.span 
                       key={key} 
                       className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm border border-blue-100 flex items-center"
@@ -514,6 +453,14 @@ const Programs = () => {
                           <span className="text-gray-500">Program Type</span>
                           <span className="font-medium text-gray-800 bg-gray-100 px-2 py-0.5 rounded-full">
                             {program.programType}
+                          </span>
+                        </div>
+                      )}
+                      {program.category && (
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-500">Category</span>
+                          <span className="font-medium text-gray-800 bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">
+                            {program.category}
                           </span>
                         </div>
                       )}

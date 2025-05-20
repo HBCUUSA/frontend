@@ -4,6 +4,9 @@ import { FiEye, FiEyeOff, FiMail, FiLock } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { motion } from 'framer-motion';
+import Sidebar from '../components/Sidebar';
+import Footer from '../components/Footer';
 
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -24,20 +27,21 @@ const Login = () => {
   const googleButtonRef = useRef(null);
   const [googleButtonVisible, setGoogleButtonVisible] = useState(false);
   const baseURL = process.env.REACT_APP_BASE_URL;
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const sidebarRef = useRef(null);
+  const profileDropdownRef = useRef(null);
 
-  // Check for magic link verification on component mount
   useEffect(() => {
     const checkForMagicLink = async () => {
-      // Check if the current URL contains a sign-in link
       if (isSignInLink(window.location.href)) {
         setVerifyingMagicLink(true);
         setLoading(true);
         
-        // Get the email from localStorage (saved when sending the link)
         let email = window.localStorage.getItem('emailForSignIn');
         
         if (!email) {
-          // If we can't find the email, prompt the user for it
           email = window.prompt('Please provide your email for confirmation');
         }
         
@@ -49,14 +53,11 @@ const Login = () => {
         }
         
         try {
-          // Verify the magic link with our AuthContext method
           const result = await verifyMagicLink(email, window.location.href);
           
           if (result.success) {
-            // Clear the emailForSignIn from localStorage
             localStorage.removeItem('emailForSignIn');
             
-            // Show success message and redirect
             setSuccess('You have been successfully signed in!');
             setTimeout(() => {
               navigate('/programs');
@@ -71,7 +72,6 @@ const Login = () => {
           setLoading(false);
           setVerifyingMagicLink(false);
           
-          // Remove the query parameters from the URL to prevent re-verification on refresh
           window.history.replaceState({}, document.title, window.location.pathname);
         }
       }
@@ -80,12 +80,9 @@ const Login = () => {
     checkForMagicLink();
   }, [navigate, isSignInLink, verifyMagicLink]);
 
-  // Initialize Google Sign-In button only when not in reset password flow
   useEffect(() => {
-    // Only attempt to render Google button when on main login screen
     if (showResetForm || showMagicLinkForm || verifyingMagicLink) return;
     
-    // Set a timeout to ensure the DOM is fully loaded
     const timer = setTimeout(() => {
       if (window.google && googleButtonRef.current) {
         try {
@@ -107,13 +104,24 @@ const Login = () => {
           setGoogleButtonVisible(false);
         }
       } else {
-        // Silent fail - don't log when in password reset flow
         setGoogleButtonVisible(false);
       }
     }, 300);
 
     return () => clearTimeout(timer);
   }, [googleButtonRef.current, showResetForm, showMagicLinkForm, verifyingMagicLink]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
@@ -129,10 +137,8 @@ const Login = () => {
       const result = await login(data.email, data.password);
       
       if (result.success) {
-        // Redirect to programs page after successful login
         navigate('/programs');
       } else {
-        // Check if the error indicates that email needs verification
         if (result.message?.includes('verify your email') || result.code === 'auth/email-not-verified') {
           setNeedsVerification(true);
           setUnverifiedEmail(data.email);
@@ -156,8 +162,6 @@ const Login = () => {
     
     try {
       await signInWithGoogle();
-      // The callback will handle redirect to dashboard
-      // We'll set a timeout to reset loading state if the callback doesn't trigger
       setTimeout(() => {
         setLoading(false);
       }, 5000);
@@ -171,7 +175,6 @@ const Login = () => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     
-    // Validate email
     if (!resetEmail || !resetEmail.trim()) {
       setError("Please enter your email address");
       return;
@@ -206,7 +209,6 @@ const Login = () => {
   const handleMagicLink = async (e) => {
     e.preventDefault();
     
-    // Validate email
     if (!magicLinkEmail || !magicLinkEmail.trim()) {
       setError("Please enter your email address");
       return;
@@ -217,13 +219,10 @@ const Login = () => {
     setSuccess("");
     
     try {
-      // Call the sendSignInLink function with the current URL as the redirect URL
-      // Add the protocol and host to make it an absolute URL
       const redirectUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
       
       await sendSignInLink(magicLinkEmail, redirectUrl);
       
-      // Save the email to localStorage to use it later when the user clicks the link
       window.localStorage.setItem('emailForSignIn', magicLinkEmail);
       
       setSuccess("Magic link sent! Check your email to sign in.");
@@ -269,222 +268,113 @@ const Login = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800">
-      <main className="flex-1 flex justify-center items-center py-8 px-4">
-        <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full transition-all duration-300 hover:shadow-xl">
-          <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">Welcome Back</h1>
-          
-          {success && (
-            <div className="p-3 mb-4 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg text-sm border border-green-200 dark:border-green-800 transition-all duration-300">
-              {success}
-            </div>
-          )}
-
-          {verifyingMagicLink ? (
-            <div className="space-y-6 text-center">
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Verifying Magic Link</h2>
-              <div className="flex flex-col items-center justify-center py-6">
-                <svg className="animate-spin h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    <div className="relative min-h-screen bg-white flex">
+      {/* Subtle Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-blue-50 opacity-70"></div>
+      
+      {/* Sidebar Component */}
+      <Sidebar
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+        isSidebarCollapsed={isSidebarCollapsed}
+        setIsSidebarCollapsed={setIsSidebarCollapsed}
+        sidebarRef={sidebarRef}
+        user={null}
+      />
+      
+      {/* Main Content */}
+      <div className="relative z-10 flex-1">
+        {/* Header */}
+        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 w-full">
+          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div className="flex items-center">
+              <button
+                className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  {isSidebarOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                  )}
                 </svg>
-                <p className="mt-4 text-gray-600 dark:text-gray-400">
-                  Verifying your sign-in link...
-                </p>
-              </div>
+              </button>
               
-              {error && (
-                <div className="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm border border-red-200 dark:border-red-800 transition-all duration-300">
-                  {error}
-                </div>
-              )}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1 }}
+                className="pl-2"
+              >
+                <Link to="/">
+                  <img 
+                    src="/img/logo-no-background.png" 
+                    alt="HBCU Logo" 
+                    className="w-40 h-auto"
+                  />
+                </Link>
+              </motion.div>
             </div>
-          ) : showResetForm ? (
-            <form className="space-y-6" onSubmit={handleResetPassword}>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Reset Your Password</h2>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                  <FiMail size={18} />
-                </div>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={resetEmail}
-                  onChange={(e) => setResetEmail(e.target.value)}
-                  required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200"
-                />
-              </div>
-              
-              {error && (
-                <div className="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm border border-red-200 dark:border-red-800 transition-all duration-300">
-                  {error}
-                </div>
-              )}
-              
-              <div className="flex space-x-3">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium ${
-                    loading ? 'opacity-70 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {loading ? (
-                    <div className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </div>
-                  ) : 'Send Reset Link'}
+
+            <div className="flex items-center space-x-6">
+              <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors">
+                Log In
+              </Link>
+              <Link to="/signup">
+                <button className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
+                  Sign Up
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowResetForm(false);
-                    setError("");
-                    setResetEmail("");
-                  }}
-                  className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none transition-colors duration-200"
-                >
-                  Back to Login
-                </button>
-              </div>
-            </form>
-          ) : showMagicLinkForm ? (
-            <form className="space-y-6" onSubmit={handleMagicLink}>
-              <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Passwordless Sign In</h2>
-              <div className="relative">
-                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                  <FiMail size={18} />
-                </div>
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={magicLinkEmail}
-                  onChange={(e) => setMagicLinkEmail(e.target.value)}
-                  required
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200"
-                />
-              </div>
-              
-              {error && (
-                <div className="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm border border-red-200 dark:border-red-800 transition-all duration-300">
-                  {error}
-                </div>
-              )}
-              
-              <div className="flex space-x-3">
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium ${
-                    loading ? 'opacity-70 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {loading ? (
-                    <div className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </div>
-                  ) : 'Send Magic Link'}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowMagicLinkForm(false);
-                    setError("");
-                    setMagicLinkEmail("");
-                  }}
-                  className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none transition-colors duration-200"
-                >
-                  Back to Login
-                </button>
-              </div>
-            </form>
-          ) : needsVerification ? (
-            <div className="space-y-6">
-              <div className="p-3 mb-4 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-lg text-sm border border-amber-200 dark:border-amber-800">
-                {error}
-              </div>
-              
-              <div className="flex flex-col space-y-4">
-                <button
-                  onClick={handleResendVerification}
-                  disabled={loading}
-                  className={`w-full bg-blue-500 dark:bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                    loading ? 'opacity-70 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {loading ? 'Sending...' : 'Resend Verification Email'}
-                </button>
-                
-                <button
-                  onClick={() => setNeedsVerification(false)}
-                  className="w-full bg-white dark:bg-gray-800 text-blue-500 dark:text-blue-300 py-2 px-4 rounded-md border border-blue-500 dark:border-blue-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  Back to Login
-                </button>
-              </div>
+              </Link>
             </div>
-          ) : (
-            <>
-              <form id="login-form" className="space-y-6" onSubmit={handleSubmit}>
-                <div className="space-y-4">
-                  <div className="relative">
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <FiMail size={18} />
-                    </div>
-                    <input
-                      type="email"
-                      placeholder="Email Address"
-                      name="email"
-                      onChange={handleChange}
-                      value={data.email}
-                      required
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200"
-                    />
-                  </div>
-                  
-                  <div className="relative">
-                    <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <FiLock size={18} />
-                    </div>
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password"
-                      name="password"
-                      onChange={handleChange}
-                      value={data.password}
-                      required
-                      className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200"
-                    />
-                    <div 
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
-                      onClick={togglePasswordVisibility}
-                    >
-                      {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
-                    </div>
-                  </div>
+          </div>
+        </header>
+        
+        <main className="flex-1 flex justify-center items-center py-8 px-4">
+          <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full transition-all duration-300 hover:shadow-xl">
+            <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">Welcome Back</h1>
+            
+            {success && (
+              <div className="p-3 mb-4 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg text-sm border border-green-200 dark:border-green-800 transition-all duration-300">
+                {success}
+              </div>
+            )}
+
+            {verifyingMagicLink ? (
+              <div className="space-y-6 text-center">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Verifying Magic Link</h2>
+                <div className="flex flex-col items-center justify-center py-6">
+                  <svg className="animate-spin h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <p className="mt-4 text-gray-600 dark:text-gray-400">
+                    Verifying your sign-in link...
+                  </p>
                 </div>
                 
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowResetForm(true);
-                      setError("");
-                      setResetEmail(data.email || ""); // Pre-fill with login email if available
-                    }}
-                    className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200"
-                  >
-                    Forgot password?
-                  </button>
+                {error && (
+                  <div className="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm border border-red-200 dark:border-red-800 transition-all duration-300">
+                    {error}
+                  </div>
+                )}
+              </div>
+            ) : showResetForm ? (
+              <form className="space-y-6" onSubmit={handleResetPassword}>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Reset Your Password</h2>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <FiMail size={18} />
+                  </div>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    required
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200"
+                  />
                 </div>
                 
                 {error && (
@@ -493,68 +383,249 @@ const Login = () => {
                   </div>
                 )}
                 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium ${
-                    loading ? 'opacity-70 cursor-not-allowed' : ''
-                  }`}
-                >
-                  {loading ? (
-                    <div className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Signing In...
-                    </div>
-                  ) : 'Sign In'}
-                </button>
-              </form>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setShowMagicLinkForm(true);
-                  setError("");
-                  setMagicLinkEmail(data.email || ""); // Pre-fill with login email if available
-                }}
-                className="w-full mt-4 py-3 px-4 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-200 flex items-center justify-center"
-              >
-                <FiMail className="mr-2" size={18} />
-                Sign in with Magic Link
-              </button>
-
-              {/* Divider */}
-              <div className="relative my-6">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-3 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">or</span>
-                </div>
-              </div>
-
-              {/* Google Sign In Button - Official */}
-              <div 
-                ref={googleButtonRef}
-                className={`w-full ${googleButtonVisible ? 'block' : 'hidden'} my-4`}
-              ></div>
-              
-              <div className="mt-6 text-center">
-                <p className="text-gray-600 dark:text-gray-400 mb-2">
-                  New here?
-                </p>
-                <Link to="/signup">
-                  <button type="button" className="mt-1 w-full py-3 px-4 rounded-lg bg-gray-100 dark:bg-gray-800 text-blue-600 dark:text-blue-400 font-medium border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
-                    Create Account
+                <div className="flex space-x-3">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium ${
+                      loading ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </div>
+                    ) : 'Send Reset Link'}
                   </button>
-                </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowResetForm(false);
+                      setError("");
+                      setResetEmail("");
+                    }}
+                    className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none transition-colors duration-200"
+                  >
+                    Back to Login
+                  </button>
+                </div>
+              </form>
+            ) : showMagicLinkForm ? (
+              <form className="space-y-6" onSubmit={handleMagicLink}>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Passwordless Sign In</h2>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <FiMail size={18} />
+                  </div>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    value={magicLinkEmail}
+                    onChange={(e) => setMagicLinkEmail(e.target.value)}
+                    required
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200"
+                  />
+                </div>
+                
+                {error && (
+                  <div className="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm border border-red-200 dark:border-red-800 transition-all duration-300">
+                    {error}
+                  </div>
+                )}
+                
+                <div className="flex space-x-3">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium ${
+                      loading ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </div>
+                    ) : 'Send Magic Link'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowMagicLinkForm(false);
+                      setError("");
+                      setMagicLinkEmail("");
+                    }}
+                    className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white py-3 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none transition-colors duration-200"
+                  >
+                    Back to Login
+                  </button>
+                </div>
+              </form>
+            ) : needsVerification ? (
+              <div className="space-y-6">
+                <div className="p-3 mb-4 bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-lg text-sm border border-amber-200 dark:border-amber-800">
+                  {error}
+                </div>
+                
+                <div className="flex flex-col space-y-4">
+                  <button
+                    onClick={handleResendVerification}
+                    disabled={loading}
+                    className={`w-full bg-blue-500 dark:bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                      loading ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {loading ? 'Sending...' : 'Resend Verification Email'}
+                  </button>
+                  
+                  <button
+                    onClick={() => setNeedsVerification(false)}
+                    className="w-full bg-white dark:bg-gray-800 text-blue-500 dark:text-blue-300 py-2 px-4 rounded-md border border-blue-500 dark:border-blue-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    Back to Login
+                  </button>
+                </div>
               </div>
-            </>
-          )}
-        </div>
-      </main>
+            ) : (
+              <>
+                <form id="login-form" className="space-y-6" onSubmit={handleSubmit}>
+                  <div className="space-y-4">
+                    <div className="relative">
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <FiMail size={18} />
+                      </div>
+                      <input
+                        type="email"
+                        placeholder="Email Address"
+                        name="email"
+                        onChange={handleChange}
+                        value={data.email}
+                        required
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200"
+                      />
+                    </div>
+                    
+                    <div className="relative">
+                      <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <FiLock size={18} />
+                      </div>
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password"
+                        name="password"
+                        onChange={handleChange}
+                        value={data.password}
+                        required
+                        className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white transition-colors duration-200"
+                      />
+                      <div 
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
+                        onClick={togglePasswordVisibility}
+                      >
+                        {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowResetForm(true);
+                        setError("");
+                        setResetEmail(data.email || "");
+                      }}
+                      className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors duration-200"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                  
+                  {error && (
+                    <div className="p-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-lg text-sm border border-red-200 dark:border-red-800 transition-all duration-300">
+                      {error}
+                    </div>
+                  )}
+                  
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 font-medium ${
+                      loading ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
+                  >
+                    {loading ? (
+                      <div className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Signing In...
+                      </div>
+                    ) : 'Sign In'}
+                  </button>
+                </form>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowMagicLinkForm(true);
+                    setError("");
+                    setMagicLinkEmail(data.email || "");
+                  }}
+                  className="w-full mt-4 py-3 px-4 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none transition-colors duration-200 flex items-center justify-center"
+                >
+                  <FiMail className="mr-2" size={18} />
+                  Sign in with Magic Link
+                </button>
+
+                <div className="relative my-6">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-gray-300 dark:border-gray-600"></div>
+                  </div>
+                  <div className="relative flex justify-center text-sm">
+                    <span className="px-3 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">or</span>
+                  </div>
+                </div>
+
+                <div 
+                  ref={googleButtonRef}
+                  className={`w-full ${googleButtonVisible ? 'block' : 'hidden'} my-4`}
+                ></div>
+                
+                <div className="mt-6 text-center">
+                  <p className="text-gray-600 dark:text-gray-400 mb-2">
+                    New here?
+                  </p>
+                  <Link to="/signup">
+                    <button type="button" className="mt-1 w-full py-3 px-4 rounded-lg bg-gray-100 dark:bg-gray-800 text-blue-600 dark:text-blue-400 font-medium border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200">
+                      Create Account
+                    </button>
+                  </Link>
+                </div>
+              </>
+            )}
+          </div>
+        </main>
+        
+        {/* Footer */}
+        {/* <Footer /> */}
+      </div>
+
+      {/* Overlay for mobile sidebar */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        ></div>
+      )}
     </div>
   );
 };
