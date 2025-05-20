@@ -1,9 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 // import Dashboard from "./pages/Dashboard";
-import Navbar from "./components/Navbar";
 import About from "./pages/About";
 import Map from "./components/Map";
 import Contribute from "./pages/Contribute";
@@ -47,23 +46,14 @@ function App() {
 
 function AppRoutes() {
   const { user, loading } = useAuth();
-  const location = useLocation();
 
   // Don't render anything until auth state is determined
   if (loading) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
 
-  // Define routes where Navbar should be hidden (these pages use Sidebar instead)
-  const hideNavbarRoutes = ['/landing', '/programs', '/', '/about', '/hbcu', '/experience', '/privacy', '/contact', '/terms','/contribute',
-    '/my-contributions','/profile', '/resume', '/public-resumes','/mentor','/resume-feedback','/login','/signup'];
-  const shouldShowNavbar = !hideNavbarRoutes.includes(location.pathname);
-
   return (
-    <>
-      {/* Conditionally render Navbar */}
-      {shouldShowNavbar && <Navbar />}
-      
+    <>      
       <Routes>
         {/* Public Routes - Always Accessible */}
         <Route path="/" element={<LandingPage />} />

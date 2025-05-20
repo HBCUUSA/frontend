@@ -4,12 +4,13 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
 
 const Mentor = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [mentors, setMentors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,126 +24,64 @@ const Mentor = () => {
   const profileDropdownRef = useRef(null);
 
   useEffect(() => {
-    const fetchMentors = async () => {
+    const loadMentors = () => {
       try {
         setLoading(true);
-        // This would be replaced with your actual API endpoint
-        const response = await axios.get(`${baseURL}/api/mentors`);
-        setMentors(response.data.mentors);
         
-        // Extract unique universities for the filter
-        const uniqueUniversities = [...new Set(response.data.mentors.map(mentor => mentor.university))];
-        setUniversities(uniqueUniversities);
-      } catch (err) {
-        console.error("Error fetching mentors:", err);
-        setError("Failed to load mentors. Please try again later.");
-        
-        // Fallback data for development/preview
-        const fallbackMentors = [
+        // Set mentors from the mentors folder
+        const mentorsList = [
           {
             id: 1,
-            name: "Dr.Samuel E. Adunyah",
-            university: "Meharry Medical College",
-            field: "Biochemistry, Cancer Biology",
-            imageUrl: "img/samuel-adunyah_1362-14.webp",
-            rate: 45,
+            name: "Michael Ewing",
+            university: "Fisk University",
+            field: "Art Curator, Frist Art Museum",
+            imageUrl: "/img/mentors/AAN_michael-ewing_full.webp",
+            email: "mewing@fristartmuseum.org",
             available: true,
-            rating: 4.8
           },
           {
             id: 2,
-            name: "Student James Wilson",
-            university: "Spelman College",
+            name: "Evelina Naish",
+            university: "Meharry Medical College",
             field: "Business Administration",
-            imageUrl: "img/20211203090156622_5.jpg",
-            rate: 10,
+            imageUrl: "/img/mentors/Evelina Naish.jpeg",
+            email: "evelina.naish@mmc.edu",
             available: true,
-            rating: 4.9
           },
           {
             id: 3,
-            name: "Dr. Aisha Williams",
-            university: "Morehouse College",
-            field: "Engineering",
-            imageUrl: "img/HBCU-2-scaled.webp",
-            rate: 55,
-            available: false,
-            rating: 4.7
-          },
-          {
-            id: 4,
-            name: "Student Marcus Davis",
-            university: "Florida A&M University",
-            field: "Biology",
-            imageUrl: "img/1671758941433.jpeg",
-            rate: 40,
+            name: "Latane Brackett",
+            university: "Jackson State University",
+            field: "Business Administration, Electronics Engineering",
+            imageUrl: "/img/mentors/latane-brackett.jpeg",
+            email: "latane.e.brackett_iii@jsums.edu",
             available: true,
-            rating: 4.6
-          },
-          {
-            id: 5,
-            name: "Dr. Keisha Thompson",
-            university: "Clark Atlanta University",
-            field: "Psychology",
-            imageUrl: "img/uc-davis-biomedical-engineering-professor-laura-marcu.jpg",
-            rate: 60,
-            available: true,
-            rating: 4.9
-          },
-          {
-            id: 6,
-            name: "Prof. Rudy Gostowski",
-            university: "Fisk University",
-            field: "Political Science",
-            imageUrl: "img/1516283823701.jpeg",
-            rate: 45,
-            available: false,
-            rating: 4.8
           }
         ];
         
-        setMentors(fallbackMentors);
-        const uniqueUniversities = [...new Set(fallbackMentors.map(mentor => mentor.university))];
+        setMentors(mentorsList);
+        
+        // Extract unique universities for the filter
+        const uniqueUniversities = [...new Set(mentorsList.map(mentor => mentor.university))];
         setUniversities(uniqueUniversities);
+      } catch (err) {
+        console.error("Error loading mentors:", err);
+        setError("Failed to load mentors. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMentors();
+    loadMentors();
   }, []);
-
-  // Close profile dropdown if clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target)) {
-        setIsProfileDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  // Handle logout
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
 
   const filteredMentors = filter 
     ? mentors.filter(mentor => mentor.university === filter)
     : mentors;
 
-  const handleBookMentor = (mentorId) => {
-    // This would be replaced with your actual booking functionality
-    alert(`Booking session with mentor ID: ${mentorId}`);
-    // In a real app, this would navigate to a booking page or open a modal
+  const handleEmailMentor = (email) => {
+    // Open email client with prefilled email
+    window.location.href = `mailto:${email}?subject=Mentorship%20Request&body=Hello,%0A%0AI'm interested in connecting with you for mentorship. I found your profile on HBCUUSA and would like to schedule some time to talk.%0A%0AThank you,%0A[Your Name]`;
   };
 
   return (
@@ -162,103 +101,11 @@ const Mentor = () => {
       
       {/* Main Content */}
       <div className="relative z-10 flex-1">
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 w-full">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div className="flex items-center">
-              {/* Sidebar toggle for mobile */}
-              <button
-                className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  {isSidebarOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-              
-              {/* Logo */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1 }}
-                className="pl-2"
-              >
-                <Link to="/">
-                  <img 
-                    src="/img/logo-no-background.png" 
-                    alt="HBCU Logo" 
-                    className="w-40 h-auto"
-                  />
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Navigation Links */}
-            <div className="flex items-center space-x-6">
-              {/* Show user profile when logged in */}
-              {user ? (
-                <div className="relative" ref={profileDropdownRef}>
-                  <button 
-                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)} 
-                    className="focus:outline-none"
-                  >
-                    <img
-                      src={user.photoURL || "/default-avatar.png"} // Profile pic or default
-                      alt="Profile"
-                      className="w-10 h-10 rounded-full border-2 border-gray-300"
-                    />
-                  </button>
-
-                  {isProfileDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-                      {/* User Info */}
-                      <div className="px-4 py-2 text-gray-900 border-b border-gray-200">
-                        <p className="font-semibold">{user.displayName || "User"}</p>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                      </div>
-
-                      {/* Profile Link */}
-                      <Link 
-                        to="/profile" 
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        onClick={() => setIsProfileDropdownOpen(false)}
-                      >
-                        View Profile
-                      </Link>
-
-                      {/* Logout Button */}
-                      <button
-                        onClick={() => {
-                          handleLogout();
-                          setIsProfileDropdownOpen(false);
-                        }}
-                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors">
-                    Log In
-                  </Link>
-                  <Link to="/signup">
-                    <button className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
-                      Sign Up
-                    </button>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </header>
+        {/* Header - Using Navbar Component */}
+        <Navbar
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
         
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
@@ -354,17 +201,12 @@ const Mentor = () => {
                         </div>
                         
                         <div className="flex items-center justify-between mt-4">
-                          <span className="text-lg font-bold text-gray-900">${mentor.rate}/hour</span>
+                          <span className="text-sm text-gray-500">{mentor.email}</span>
                           <button 
-                            onClick={() => handleBookMentor(mentor.id)}
-                            disabled={!mentor.available}
-                            className={`px-4 py-2 rounded-md ${
-                              mentor.available 
-                                ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700' 
-                                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                            }`}
+                            onClick={() => handleEmailMentor(mentor.email)}
+                            className="px-4 py-2 rounded-md bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700"
                           >
-                            Book Session
+                            Email Mentor
                           </button>
                         </div>
                       </div>
@@ -377,11 +219,13 @@ const Mentor = () => {
               <div className="mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-xl shadow-md">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">Become a Mentor</h2>
                 <p className="text-gray-700 max-w-2xl mx-auto mb-6">
-                  Are you an HBCU alumni or faculty? Share your knowledge and experience by becoming a mentor for the next generation.
+                  Are you an HBCU alumni or faculty? Share your knowledge and experience by becoming a mentor for the next generation of students.
                 </p>
-                <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
-                  Apply to Mentor
-                </button>
+                <Link to="/mentor-signup">
+                  <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                    Apply to Mentor
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

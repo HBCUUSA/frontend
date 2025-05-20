@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
 
 const Contribute = () => {
@@ -102,103 +103,11 @@ const Contribute = () => {
       
       {/* Main Content */}
       <div className={`relative z-10 flex-1`}>
-        {/* Header */}
-        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 w-full">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div className="flex items-center">
-              {/* Sidebar toggle for mobile */}
-              <button
-                className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  {isSidebarOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-              
-              {/* Logo */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1 }}
-                className="pl-2"
-              >
-                <Link to="/">
-                  <img 
-                    src="/img/logo-no-background.png" 
-                    alt="HBCU Logo" 
-                    className="w-40 h-auto"
-                  />
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Navigation Links */}
-            <div className="flex items-center space-x-6">
-              {/* Show user profile when logged in */}
-              {user ? (
-                <div className="relative" ref={profileDropdownRef}>
-                  <button 
-                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)} 
-                    className="focus:outline-none"
-                  >
-                    <img
-                      src={user.photoURL || "/default-avatar.png"} // Profile pic or default
-                      alt="Profile"
-                      className="w-10 h-10 rounded-full border-2 border-gray-300"
-                    />
-                  </button>
-
-                  {isProfileDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-                      {/* User Info */}
-                      <div className="px-4 py-2 text-gray-900 border-b border-gray-200">
-                        <p className="font-semibold">{user.displayName || "User"}</p>
-                        <p className="text-sm text-gray-500">{user.email}</p>
-                      </div>
-
-                      {/* Profile Link */}
-                      <Link 
-                        to="/profile" 
-                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        onClick={() => setIsProfileDropdownOpen(false)}
-                      >
-                        View Profile
-                      </Link>
-
-                      {/* Logout Button */}
-                      <button
-                        onClick={() => {
-                          handleLogout();
-                          setIsProfileDropdownOpen(false);
-                        }}
-                        className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <>
-                  <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors">
-                    Log In
-                  </Link>
-                  <Link to="/signup">
-                    <button className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
-                      Sign Up
-                    </button>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </header>
+        {/* Header - Using Navbar Component */}
+        <Navbar 
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
         
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
