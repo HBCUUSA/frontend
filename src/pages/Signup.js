@@ -4,7 +4,6 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
 const Signup = () => {
@@ -18,11 +17,8 @@ const Signup = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [verificationSent, setVerificationSent] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState("");
-  const sidebarRef = useRef(null);
   const navigate = useNavigate();
   const { signup, signInWithGoogle, resendVerificationEmail, logout } = useAuth();
   const googleButtonRef = useRef(null);
@@ -148,37 +144,12 @@ const Signup = () => {
       {/* Subtle Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-blue-50 opacity-70"></div>
       
-      {/* Sidebar */}
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-        isSidebarCollapsed={isSidebarCollapsed}
-        setIsSidebarCollapsed={setIsSidebarCollapsed}
-        sidebarRef={sidebarRef}
-        user={null}
-      />
-      
       {/* Main Content */}
       <div className="relative z-10 flex-1">
         {/* Header */}
         <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 w-full">
           <div className="container mx-auto px-6 py-4 flex justify-between items-center">
             <div className="flex items-center">
-              {/* Sidebar toggle for mobile */}
-              <button
-                className="lg:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  {isSidebarOpen ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                  )}
-                </svg>
-              </button>
-              
               {/* Logo */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -360,18 +331,7 @@ const Signup = () => {
             )}
           </div>
         </main>
-        
-        {/* Footer */}
-        {/* <Footer /> */}
       </div>
-
-      {/* Overlay for mobile sidebar */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-      )}
     </div>
   );
 };
