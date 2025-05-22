@@ -166,7 +166,7 @@ const Mentor = () => {
                         <img 
                           src={mentor.imageUrl || '/img/default-mentor.jpg'} 
                           alt={mentor.name}
-                          className="w-full h-64 object-cover"
+                          className="w-full h-64 object-contain bg-gray-50"
                         />
                         {mentor.available ? (
                           <span className="absolute top-4 right-4 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
