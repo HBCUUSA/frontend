@@ -111,23 +111,23 @@ const Mentor = () => {
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
           <div className="min-h-screen">
             <div className="container mx-auto px-4 py-8">
-              <div className="text-center mb-12">
-                <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-950">
+              <div className="text-center mb-8 md:mb-12">
+                <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-3 md:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-950">
                   Find Your Mentor
                 </h1>
-                <p className="text-xl to-blue-950 max-w-2xl mx-auto">
+                <p className="text-base md:text-xl to-blue-950 max-w-2xl mx-auto px-2">
                   Connect with experienced mentors from your target HBCU to get personalized guidance for your academic journey.
                 </p>
               </div>
 
               {/* University Filter */}
-              <div className="max-w-md mx-auto mb-8">
+              <div className="max-w-md mx-auto mb-6 md:mb-8 px-4 sm:px-0">
                 <label htmlFor="university-filter" className="block text-sm font-medium text-gray-700 mb-2">
                   Filter by University
                 </label>
                 <select
                   id="university-filter"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
                 >
@@ -159,37 +159,37 @@ const Mentor = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-2 sm:px-0">
                   {filteredMentors.map((mentor) => (
                     <div key={mentor.id} className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform hover:scale-105">
                       <div className="relative">
                         <img 
                           src={mentor.imageUrl || '/img/default-mentor.jpg'} 
                           alt={mentor.name}
-                          className="w-full h-64 object-contain bg-gray-50"
+                          className="w-full h-52 sm:h-64 object-contain bg-gray-50"
                         />
                         {mentor.available ? (
-                          <span className="absolute top-4 right-4 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                          <span className="absolute top-3 right-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
                             Available
                           </span>
                         ) : (
-                          <span className="absolute top-4 right-4 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                          <span className="absolute top-3 right-3 bg-red-500 text-white text-xs px-2 py-1 rounded-full">
                             Unavailable
                           </span>
                         )}
                       </div>
                       
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold text-gray-900">{mentor.name}</h3>
-                        <p className="text-blue-600 font-semibold">{mentor.university}</p>
-                        <p className="text-gray-600 mb-2">{mentor.field}</p>
+                      <div className="p-4 md:p-6">
+                        <h3 className="text-lg md:text-xl font-bold text-gray-900 line-clamp-1">{mentor.name}</h3>
+                        <p className="text-blue-600 font-semibold text-sm md:text-base">{mentor.university}</p>
+                        <p className="text-gray-600 mb-2 text-sm line-clamp-2">{mentor.field}</p>
                         
-                        <div className="flex items-center mt-2 mb-4">
+                        <div className="flex items-center mt-2 mb-3 md:mb-4">
                           <div className="flex">
                             {[...Array(5)].map((_, i) => (
                               <svg 
                                 key={i} 
-                                className={`w-5 h-5 ${i < Math.floor(mentor.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                                className={`w-4 h-4 md:w-5 md:h-5 ${i < Math.floor(mentor.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
                                 fill="currentColor" 
                                 viewBox="0 0 20 20"
                               >
@@ -197,14 +197,14 @@ const Mentor = () => {
                               </svg>
                             ))}
                           </div>
-                          <span className="ml-2 text-gray-600">{mentor.rating}/5.0</span>
+                          <span className="ml-2 text-gray-600 text-xs md:text-sm">{mentor.rating}/5.0</span>
                         </div>
                         
-                        <div className="flex items-center justify-between mt-4">
-                          <span className="text-sm text-gray-500">{mentor.email}</span>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3 md:mt-4">
+                          <span className="text-xs text-gray-500 truncate max-w-[200px]">{mentor.email}</span>
                           <button 
                             onClick={() => handleEmailMentor(mentor.email)}
-                            className="px-4 py-2 rounded-md bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700"
+                            className="px-3 py-1.5 md:px-4 md:py-2 rounded-md bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 text-xs md:text-sm whitespace-nowrap"
                           >
                             Email Mentor
                           </button>
@@ -216,13 +216,13 @@ const Mentor = () => {
               )}
 
               {/* Call to Action */}
-              <div className="mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-xl shadow-md">
-                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">Become a Mentor</h2>
-                <p className="text-gray-700 max-w-2xl mx-auto mb-6">
+              <div className="mt-12 md:mt-16 text-center bg-gradient-to-r from-blue-50 to-purple-50 p-5 md:p-8 rounded-xl shadow-md mx-2 sm:mx-0">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 md:mb-4 text-gray-900">Become a Mentor</h2>
+                <p className="text-sm md:text-base text-gray-700 max-w-2xl mx-auto mb-5 md:mb-6 px-1">
                   Are you an HBCU alumni or faculty? Share your knowledge and experience by becoming a mentor for the next generation of students.
                 </p>
                 <Link to="/mentor-signup">
-                  <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                  <button className="px-5 py-2 md:px-6 md:py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full text-white font-bold text-sm md:text-lg shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
                     Apply to Mentor
                   </button>
                 </Link>

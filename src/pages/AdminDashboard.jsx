@@ -266,9 +266,9 @@ const AdminDashboard = () => {
       <h1 className="text-3xl font-bold mb-6 dark:text-white">Admin Dashboard</h1>
       
       {/* Navigation Tabs */}
-      <div className="flex border-b border-gray-200 dark:border-gray-700 mb-6">
+      <div className="flex flex-wrap border-b border-gray-200 dark:border-gray-700 mb-6">
         <button
-          className={`py-2 px-4 font-medium ${
+          className={`py-2 px-3 md:px-4 font-medium text-sm md:text-base ${
             activeTab === 'overview'
               ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
               : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
@@ -278,7 +278,7 @@ const AdminDashboard = () => {
           Overview
         </button>
         <button
-          className={`py-2 px-4 font-medium ${
+          className={`py-2 px-3 md:px-4 font-medium text-sm md:text-base ${
             activeTab === 'contributions'
               ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
               : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
@@ -308,10 +308,10 @@ const AdminDashboard = () => {
       {activeTab === 'overview' && (
         <div>
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-500 dark:text-gray-400">Pending Contributions</h3>
-              <p className="text-3xl font-bold mt-2 text-yellow-500">{stats.pending}</p>
+              <p className="text-2xl md:text-3xl font-bold mt-2 text-yellow-500">{stats.pending}</p>
               <button 
                 onClick={() => {
                   setActiveTab('contributions');
@@ -323,9 +323,9 @@ const AdminDashboard = () => {
               </button>
             </div>
             
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-500 dark:text-gray-400">Approved Contributions</h3>
-              <p className="text-3xl font-bold mt-2 text-green-500">{stats.approved}</p>
+              <p className="text-2xl md:text-3xl font-bold mt-2 text-green-500">{stats.approved}</p>
               <button 
                 onClick={() => {
                   setActiveTab('contributions');
@@ -337,9 +337,9 @@ const AdminDashboard = () => {
               </button>
             </div>
             
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-500 dark:text-gray-400">Rejected Contributions</h3>
-              <p className="text-3xl font-bold mt-2 text-red-500">{stats.rejected}</p>
+              <p className="text-2xl md:text-3xl font-bold mt-2 text-red-500">{stats.rejected}</p>
               <button 
                 onClick={() => {
                   setActiveTab('contributions');
@@ -351,9 +351,9 @@ const AdminDashboard = () => {
               </button>
             </div>
             
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md">
               <h3 className="text-lg font-semibold text-gray-500 dark:text-gray-400">Total Programs</h3>
-              <p className="text-3xl font-bold mt-2 text-blue-500">{stats.totalPrograms}</p>
+              <p className="text-2xl md:text-3xl font-bold mt-2 text-blue-500">{stats.totalPrograms}</p>
               <Link 
                 to="/programs"
                 className="mt-4 text-sm text-blue-600 dark:text-blue-400 hover:underline"
@@ -364,7 +364,7 @@ const AdminDashboard = () => {
           </div>
           
           {/* Recent Contributions */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <div className="bg-white dark:bg-gray-800 p-4 md:p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4 dark:text-white">Recent Contributions</h2>
             
             {loading ? (
@@ -376,41 +376,41 @@ const AdminDashboard = () => {
                 <p className="dark:text-white">No recent contributions found.</p>
               </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto -mx-4 md:mx-0">
                 <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
                   <thead className="bg-gray-100 dark:bg-gray-700">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Program</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Contributor</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Program</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden sm:table-cell">Contributor</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">Date</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                     {recentContributions.map((contribution) => (
                       <tr key={contribution.id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                        <td className="px-6 py-4">
+                        <td className="px-3 md:px-6 py-4">
                           <div className="flex flex-col">
-                            <span className="font-medium text-gray-900 dark:text-white">{contribution.name}</span>
+                            <span className="font-medium text-gray-900 dark:text-white text-sm md:text-base">{contribution.name}</span>
                             <a 
                               href={contribution.website} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                              className="text-xs md:text-sm text-blue-600 dark:text-blue-400 hover:underline truncate max-w-[120px] md:max-w-full"
                             >
                               {contribution.website}
                             </a>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-900 dark:text-white">{contribution.userDisplayName}</div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">{contribution.userEmail}</div>
+                        <td className="px-3 md:px-6 py-4 hidden sm:table-cell">
+                          <div className="text-xs md:text-sm text-gray-900 dark:text-white">{contribution.userDisplayName}</div>
+                          <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{contribution.userEmail}</div>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                        <td className="px-3 md:px-6 py-4 text-xs md:text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
                           {formatDate(contribution.createdAt)}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-3 md:px-6 py-4">
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             contribution.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 
                             contribution.status === 'rejected' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 
@@ -419,7 +419,7 @@ const AdminDashboard = () => {
                             {contribution.status.charAt(0).toUpperCase() + contribution.status.slice(1)}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-sm font-medium">
+                        <td className="px-3 md:px-6 py-4 text-xs md:text-sm font-medium">
                           <button
                             onClick={() => {
                               setSelectedContribution(contribution);
@@ -427,7 +427,7 @@ const AdminDashboard = () => {
                             }}
                             className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3"
                           >
-                            View Details
+                            View
                           </button>
                         </td>
                       </tr>
@@ -444,7 +444,7 @@ const AdminDashboard = () => {
       {activeTab === 'contributions' && (
         <div>
           {/* Filter Controls */}
-          <div className="flex flex-wrap items-center mb-6 gap-4">
+          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center mb-6 gap-4">
             <div>
               <label htmlFor="statusFilter" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Filter by Status
@@ -453,7 +453,7 @@ const AdminDashboard = () => {
                 id="statusFilter"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 md:px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Contributions</option>
                 <option value="pending">Pending</option>
@@ -462,7 +462,7 @@ const AdminDashboard = () => {
               </select>
             </div>
             
-            <div className="ml-auto text-sm text-gray-500 dark:text-gray-400">
+            <div className="sm:ml-auto text-sm text-gray-500 dark:text-gray-400">
               Showing {contributions.length} of {pagination.totalCount} contributions
             </div>
           </div>
@@ -478,44 +478,44 @@ const AdminDashboard = () => {
             </div>
           ) : (
             <>
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto -mx-4 md:mx-0">
                 <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
                   <thead className="bg-gray-100 dark:bg-gray-700">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Program</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Contributor</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Program</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden sm:table-cell">Contributor</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider hidden md:table-cell">Date</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                      <th className="px-3 md:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                     {contributions.map((contribution) => (
                       <tr key={contribution.id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
-                        <td className="px-6 py-4">
+                        <td className="px-3 md:px-6 py-4">
                           <div className="flex flex-col">
-                            <span className="font-medium text-gray-900 dark:text-white">{contribution.name}</span>
+                            <span className="font-medium text-gray-900 dark:text-white text-sm md:text-base">{contribution.name}</span>
                             <a 
                               href={contribution.website} 
                               target="_blank" 
                               rel="noopener noreferrer"
-                              className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                              className="text-xs md:text-sm text-blue-600 dark:text-blue-400 hover:underline truncate max-w-[120px] md:max-w-full"
                             >
                               {contribution.website}
                             </a>
-                            <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mt-1">
+                            <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 line-clamp-2 mt-1">
                               {contribution.description}
                             </p>
                           </div>
                         </td>
-                        <td className="px-6 py-4">
-                          <div className="text-sm text-gray-900 dark:text-white">{contribution.userDisplayName}</div>
-                          <div className="text-sm text-gray-500 dark:text-gray-400">{contribution.userEmail}</div>
+                        <td className="px-3 md:px-6 py-4 hidden sm:table-cell">
+                          <div className="text-xs md:text-sm text-gray-900 dark:text-white">{contribution.userDisplayName}</div>
+                          <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{contribution.userEmail}</div>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                        <td className="px-3 md:px-6 py-4 text-xs md:text-sm text-gray-500 dark:text-gray-400 hidden md:table-cell">
                           {formatDate(contribution.createdAt)}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-3 md:px-6 py-4">
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             contribution.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 
                             contribution.status === 'rejected' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 
@@ -529,8 +529,8 @@ const AdminDashboard = () => {
                             </div>
                           )}
                         </td>
-                        <td className="px-6 py-4 text-sm font-medium">
-                          <div className="flex space-x-2">
+                        <td className="px-3 md:px-6 py-4 text-xs md:text-sm font-medium">
+                          <div className="flex flex-col sm:flex-row gap-2">
                             <button
                               onClick={() => {
                                 setSelectedContribution(contribution);
@@ -606,11 +606,11 @@ const AdminDashboard = () => {
       
       {/* Contribution Detail Modal */}
       {modalOpen && selectedContribution && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 md:p-4 z-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="p-4 md:p-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold dark:text-white">Contribution Details</h2>
+                <h2 className="text-lg md:text-xl font-bold dark:text-white">Contribution Details</h2>
                 <button
                   onClick={() => {
                     setModalOpen(false);
@@ -627,30 +627,30 @@ const AdminDashboard = () => {
               </div>
               
               <div className="mb-6">
-                <h3 className="text-lg font-semibold dark:text-white">{selectedContribution.name}</h3>
+                <h3 className="text-base md:text-lg font-semibold dark:text-white">{selectedContribution.name}</h3>
                 <a 
                   href={selectedContribution.website} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                  className="text-sm text-blue-600 dark:text-blue-400 hover:underline break-words"
                 >
                   {selectedContribution.website}
                 </a>
                 
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Submitted by</p>
-                    <p className="dark:text-white">{selectedContribution.userDisplayName}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{selectedContribution.userEmail}</p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Submitted by</p>
+                    <p className="text-sm md:text-base dark:text-white">{selectedContribution.userDisplayName}</p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">{selectedContribution.userEmail}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">Submission Date</p>
-                    <p className="dark:text-white">{formatDate(selectedContribution.createdAt)}</p>
+                    <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Submission Date</p>
+                    <p className="text-sm md:text-base dark:text-white">{formatDate(selectedContribution.createdAt)}</p>
                   </div>
                 </div>
                 
                 <div className="mt-4">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Status</p>
+                  <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Status</p>
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                     selectedContribution.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 
                     selectedContribution.status === 'rejected' ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 
@@ -661,25 +661,25 @@ const AdminDashboard = () => {
                 </div>
                 
                 <div className="mt-4">
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Description</p>
-                  <p className="dark:text-white whitespace-pre-line">{selectedContribution.description}</p>
+                  <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Description</p>
+                  <p className="text-sm md:text-base dark:text-white whitespace-pre-line">{selectedContribution.description}</p>
                 </div>
               </div>
               
               <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-                <h3 className="text-lg font-semibold mb-4 dark:text-white">Actions</h3>
+                <h3 className="text-base md:text-lg font-semibold mb-4 dark:text-white">Actions</h3>
                 
                 {/* Approve Form */}
                 {selectedContribution.status !== 'approved' && (
                   <div className="mb-4">
-                    <label htmlFor="applicationMonth" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="applicationMonth" className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Application Month (required for approval)
                     </label>
                     <select
                       id="applicationMonth"
                       value={applicationMonth}
                       onChange={(e) => setApplicationMonth(e.target.value)}
-                      className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 md:px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="">Select Month</option>
                       <option value="January">January</option>
@@ -699,7 +699,7 @@ const AdminDashboard = () => {
                     <button
                       onClick={() => handleStatusUpdate(selectedContribution.id, 'approved')}
                       disabled={!applicationMonth || (updateStatus.id === selectedContribution.id && updateStatus.loading)}
-                      className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md text-sm hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
                     >
                       {updateStatus.id === selectedContribution.id && updateStatus.loading ? 'Processing...' : 'Approve Contribution'}
                     </button>
@@ -709,7 +709,7 @@ const AdminDashboard = () => {
                 {/* Reject Form */}
                 {selectedContribution.status !== 'rejected' && (
                   <div className="mb-4">
-                    <label htmlFor="rejectionReason" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="rejectionReason" className="block text-xs md:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Rejection Reason
                     </label>
                     <textarea
@@ -717,14 +717,14 @@ const AdminDashboard = () => {
                       value={rejectionReason}
                       onChange={(e) => setRejectionReason(e.target.value)}
                       placeholder="Provide a reason for rejection"
-                      className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+                      className="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md py-2 px-3 md:px-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
                       rows={3}
                     ></textarea>
                     
                     <button
                       onClick={() => handleStatusUpdate(selectedContribution.id, 'rejected')}
                       disabled={!rejectionReason || (updateStatus.id === selectedContribution.id && updateStatus.loading)}
-                      className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="mt-4 bg-red-500 text-white px-4 py-2 rounded-md text-sm hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
                     >
                       {updateStatus.id === selectedContribution.id && updateStatus.loading ? 'Processing...' : 'Reject Contribution'}
                     </button>
@@ -737,7 +737,7 @@ const AdminDashboard = () => {
                     <button
                       onClick={() => handleStatusUpdate(selectedContribution.id, 'pending')}
                       disabled={updateStatus.id === selectedContribution.id && updateStatus.loading}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-yellow-500 text-white px-4 py-2 rounded-md text-sm hover:bg-yellow-600 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
                     >
                       {updateStatus.id === selectedContribution.id && updateStatus.loading ? 'Processing...' : 'Reset to Pending'}
                     </button>
@@ -752,7 +752,7 @@ const AdminDashboard = () => {
                       setModalOpen(false);
                     }}
                     disabled={updateStatus.id === selectedContribution.id && updateStatus.loading}
-                    className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="bg-gray-500 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
                   >
                     {updateStatus.id === selectedContribution.id && updateStatus.loading ? 'Processing...' : 'Delete Contribution'}
                   </button>

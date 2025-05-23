@@ -144,11 +144,11 @@ const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               </button>
 
               {isProfileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 z-50">
+                <div className="absolute right-0 mt-2 w-48 sm:w-56 bg-white dark:bg-gray-800 shadow-lg rounded-lg py-2 z-50">
                   {/* User Info */}
                   <div className="px-4 py-2 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700">
-                    <p className="font-semibold">{user.displayName || "User"}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{user.email}</p>
+                    <p className="font-semibold truncate">{user.displayName || "User"}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate overflow-hidden text-ellipsis">{user.email}</p>
                   </div>
 
                   {/* Profile Link */}

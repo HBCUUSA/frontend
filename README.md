@@ -2,7 +2,7 @@
 
 **HBCUUSA.com** is a comprehensive platform dedicated to showcasing and promoting Historically Black Colleges and Universities (HBCUs) in the United States. The website provides resources, information, and a directory of HBCUs to support students, educators, and communities interested in these institutions.
 
-This repository contains the source code for the HBCUUSA.com website.
+This repository contains the source code for the https://hbcuusa.com/ website.
 
 ---
 

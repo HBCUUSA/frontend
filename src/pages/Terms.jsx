@@ -37,19 +37,19 @@ const Terms = () => {
         
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
-          <main className="max-w-4xl mx-auto px-6 py-12">
+          <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
             <motion.div 
-              className="mb-12 text-center"
+              className="mb-8 sm:mb-12 text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Terms of Service</h1>
-              <p className="text-lg text-gray-600">Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-4">Terms of Service</h1>
+              <p className="text-base sm:text-lg text-gray-600">Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
             </motion.div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 mb-8">
-              <div className="prose prose-blue max-w-none">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-8 mb-8">
+              <div className="prose prose-blue max-w-none prose-headings:text-lg prose-headings:sm:text-xl prose-headings:font-semibold prose-p:text-sm prose-p:sm:text-base prose-li:text-sm prose-li:sm:text-base">
                 <h2>1. Agreement to Terms</h2>
                 <p>
                   By accessing or using HBCUUSA ("the Service"), you agree to be bound by these Terms of Service 
