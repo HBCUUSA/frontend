@@ -68,9 +68,9 @@ const FeedbackComment = ({ comment, level = 0, onReply, onDelete, onUpvote, onDo
   };
 
   return (
-    <div className={`${level > 0 ? 'ml-8 border-l-2 border-gray-200 dark:border-gray-700 pl-4' : ''}`}>
+    <div className={`${level > 0 ? 'ml-2 sm:ml-8 border-l-2 border-gray-200 dark:border-gray-700 pl-2 sm:pl-4' : ''}`}>
       {!collapsed ? (
-        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-3">
+        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 sm:p-4 mb-3">
           <div className="flex justify-between items-start">
             <div className="flex items-start">
               {/* Vote Arrows (Reddit Style) */}
@@ -83,7 +83,7 @@ const FeedbackComment = ({ comment, level = 0, onReply, onDelete, onUpvote, onDo
                       : 'text-gray-500 hover:text-orange-500'
                   }`}
                 >
-                  <svg className="h-5 w-5" fill={isUpvoted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-4 w-4 sm:h-5 sm:w-5" fill={isUpvoted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" />
                   </svg>
                 </button>
@@ -102,7 +102,7 @@ const FeedbackComment = ({ comment, level = 0, onReply, onDelete, onUpvote, onDo
                       : 'text-gray-500 hover:text-blue-500'
                   }`}
                 >
-                  <svg className="h-5 w-5" fill={isDownvoted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-4 w-4 sm:h-5 sm:w-5" fill={isDownvoted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -113,35 +113,35 @@ const FeedbackComment = ({ comment, level = 0, onReply, onDelete, onUpvote, onDo
                 <img 
                   src={comment.reviewerPhotoURL} 
                   alt={comment.reviewerName} 
-                  className="h-10 w-10 rounded-full mr-3"
+                  className="h-8 w-8 sm:h-10 sm:w-10 rounded-full mr-2 sm:mr-3"
                 />
               ) : (
-                <div className="h-10 w-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center mr-3">
-                  <span className="text-gray-600 dark:text-gray-300 text-sm font-medium">
+                <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center mr-2 sm:mr-3">
+                  <span className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
                     {comment.reviewerName.charAt(0).toUpperCase()}
                   </span>
                 </div>
               )}
               
-              <div>
-                <div className="flex items-center">
-                  <h4 className="text-sm font-medium text-gray-800 dark:text-white">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center">
+                  <h4 className="text-xs sm:text-sm font-medium text-gray-800 dark:text-white mr-2">
                     {comment.reviewerName}
                   </h4>
-                  <span className="mx-2 text-xs text-gray-500 dark:text-gray-400">•</span>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="mx-1 text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">•</span>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 w-full sm:w-auto">
                     {formatDate(comment.createdAt)}
                   </p>
                 </div>
               </div>
             </div>
             
-            <div className="flex items-center">
+            <div className="flex items-center ml-2">
               {/* Collapse button */}
               {hasReplies && (
                 <button
                   onClick={() => setCollapsed(true)}
-                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 mr-3 focus:outline-none"
+                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 mr-2 sm:mr-3 focus:outline-none"
                 >
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14" />
@@ -155,7 +155,7 @@ const FeedbackComment = ({ comment, level = 0, onReply, onDelete, onUpvote, onDo
                   onClick={() => onDelete(comment.id)}
                   className="text-gray-400 hover:text-red-500 focus:outline-none"
                 >
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
                 </button>
@@ -163,7 +163,7 @@ const FeedbackComment = ({ comment, level = 0, onReply, onDelete, onUpvote, onDo
             </div>
           </div>
           
-          <div className="mt-3 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">
+          <div className="mt-3 text-xs sm:text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">
             {comment.content}
           </div>
 
@@ -213,15 +213,15 @@ const FeedbackComment = ({ comment, level = 0, onReply, onDelete, onUpvote, onDo
         </div>
       ) : (
         /* Collapsed view */
-        <div className="flex items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded cursor-pointer mb-2" onClick={() => setCollapsed(false)}>
+        <div className="flex items-center py-2 px-3 sm:px-4 hover:bg-gray-100 dark:hover:bg-gray-800 rounded cursor-pointer mb-2" onClick={() => setCollapsed(false)}>
           <button className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 mr-2 focus:outline-none">
             <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
           </button>
-          <span className="text-sm text-gray-700 dark:text-gray-300 font-medium">{comment.reviewerName}</span>
-          <span className="mx-2 text-xs text-gray-500 dark:text-gray-400">•</span>
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 font-medium truncate">{comment.reviewerName}</span>
+          <span className="mx-1 sm:mx-2 text-xs text-gray-500 dark:text-gray-400">•</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
             {replyCount} {replyCount === 1 ? 'reply' : 'replies'}
           </span>
         </div>
@@ -516,21 +516,21 @@ const ResumeFeedback = ({ userId }) => {
   return (
     <div>
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <div className="bg-red-100 border border-red-400 text-red-700 px-3 sm:px-4 py-2 sm:py-3 rounded mb-4 text-sm sm:text-base">
           {error}
         </div>
       )}
       
       {success && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        <div className="bg-green-100 border border-green-400 text-green-700 px-3 sm:px-4 py-2 sm:py-3 rounded mb-4 text-sm sm:text-base">
           {success}
         </div>
       )}
       
       {/* Add new feedback form */}
       {user && user.uid !== userId && (
-        <div className="mb-8 border-b border-gray-200 dark:border-gray-700 pb-6">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+        <div className="mb-6 sm:mb-8 border-b border-gray-200 dark:border-gray-700 pb-4 sm:pb-6">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white mb-3 sm:mb-4">
             Add Feedback
           </h3>
           
@@ -542,7 +542,7 @@ const ResumeFeedback = ({ userId }) => {
               <textarea
                 id="feedback"
                 rows="4"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
                 placeholder="Provide constructive feedback on this resume..."
                 value={newFeedback}
                 onChange={(e) => setNewFeedback(e.target.value)}
@@ -552,7 +552,7 @@ const ResumeFeedback = ({ userId }) => {
             
             <button
               type="submit"
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               disabled={submitting}
             >
               {submitting ? (
@@ -572,13 +572,13 @@ const ResumeFeedback = ({ userId }) => {
       )}
       
       {/* Sort options for the feedback thread */}
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-white mb-2 sm:mb-0">
           Feedback Thread ({feedback.length})
         </h3>
         
-        <div className="flex items-center space-x-2">
-          <span className="text-sm text-gray-600 dark:text-gray-400">Sort by:</span>
+        <div className="flex items-center">
+          <span className="text-sm text-gray-600 dark:text-gray-400 mr-2">Sort by:</span>
           <div className="relative inline-block text-left">
             <select
               value={sortBy}
@@ -595,11 +595,11 @@ const ResumeFeedback = ({ userId }) => {
       
       {/* Feedback thread */}
       {feedback.length === 0 ? (
-        <div className="text-center py-8">
-          <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="text-center py-6 sm:py-8">
+          <svg className="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
           </svg>
-          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No feedback yet</h3>
+          <h3 className="mt-2 text-sm sm:text-base font-medium text-gray-900 dark:text-white">No feedback yet</h3>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Be the first to provide feedback on this resume.
           </p>

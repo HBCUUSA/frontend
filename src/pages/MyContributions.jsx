@@ -111,37 +111,37 @@ const MyContributions = () => {
         
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
-          <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-6 dark:text-white">My Contributions</h1>
+          <div className="container mx-auto px-4 py-6 sm:py-8 min-h-[calc(100vh-160px)]">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 dark:text-white">My Contributions</h1>
             
             {loading ? (
               <div className="flex justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500"></div>
               </div>
             ) : error ? (
-              <div className="bg-red-100 dark:bg-red-900 border border-red-400 text-red-800 dark:text-red-200 p-4 rounded">
+              <div className="bg-red-100 dark:bg-red-900 border border-red-400 text-red-800 dark:text-red-200 p-3 sm:p-4 rounded text-sm sm:text-base">
                 {error}
               </div>
             ) : contributions.length === 0 ? (
-              <div className="bg-gray-100 dark:bg-gray-700 p-6 rounded-lg text-center">
-                <p className="dark:text-white">You haven't made any contributions yet.</p>
+              <div className="bg-gray-100 dark:bg-gray-700 p-4 sm:p-6 rounded-lg text-center">
+                <p className="dark:text-white text-sm sm:text-base">You haven't made any contributions yet.</p>
               </div>
             ) : (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {contributions.map((contribution) => (
-                  <div key={contribution.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-                    <h2 className="text-xl font-semibold mb-2 dark:text-white">{contribution.name}</h2>
+                  <div key={contribution.id} className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-md">
+                    <h2 className="text-lg sm:text-xl font-semibold mb-2 dark:text-white truncate">{contribution.name}</h2>
                     <a 
                       href={contribution.website} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-blue-600 dark:text-blue-400 hover:underline mb-3 inline-block"
+                      className="text-blue-600 dark:text-blue-400 hover:underline mb-3 inline-block text-sm truncate max-w-full"
                     >
                       {contribution.website}
                     </a>
-                    <p className="text-gray-700 dark:text-gray-300 mb-4 line-clamp-3">{contribution.description}</p>
-                    <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400">
-                      <span>
+                    <p className="text-gray-700 dark:text-gray-300 mb-4 text-sm sm:text-base line-clamp-3">{contribution.description}</p>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                      <span className="mb-2 sm:mb-0">
                         Status: <span className={`font-medium ${
                           contribution.status === 'approved' ? 'text-green-600 dark:text-green-400' : 
                           contribution.status === 'rejected' ? 'text-red-600 dark:text-red-400' : 

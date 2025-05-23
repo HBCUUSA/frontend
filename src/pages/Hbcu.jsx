@@ -144,21 +144,21 @@ export default function Home() {
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
           <Map />
-          <main className="max-w-6xl mx-auto px-6 py-8">
-            <h1 className="text-2xl font-bold mb-6 dark:text-white">
+          <main className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+            <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 dark:text-white">
               HBCU Universities Database
             </h1>
 
-            <div className="overflow-x-auto">
-              <table id="universityTable" className="w-full border-collapse text-left">
+            <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+              <table id="universityTable" className="w-full border-collapse text-left text-sm sm:text-base">
                 <thead>
                   <tr className="bg-blue-800 dark:bg-gray-900 text-white">
-                    <th className="px-2 sm:px-4 py-2 w-10">#</th>
-                    <th className="px-2 sm:px-4 py-2">College / University</th>
-                    <th className="px-2 sm:px-4 py-2">URL</th>
+                    <th className="px-2 sm:px-4 py-2 w-10 text-xs sm:text-sm">#</th>
+                    <th className="px-2 sm:px-4 py-2 text-xs sm:text-sm">College / University</th>
+                    <th className="px-2 sm:px-4 py-2 text-xs sm:text-sm">URL</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white dark:bg-gray-800"></tbody>
+                <tbody className="bg-white dark:bg-gray-800 text-xs sm:text-sm"></tbody>
               </table>
             </div>
           </main>

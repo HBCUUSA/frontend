@@ -185,7 +185,7 @@ const ResumeFeedbackPage = () => {
         
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
-          <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12">
+          <div className="min-h-screen bg-transparent dark:bg-gray-900 py-12">
             <div className="max-w-4xl mx-auto px-4">
               {!user ? (
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">

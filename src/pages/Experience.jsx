@@ -7,29 +7,31 @@ import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../context/AuthContext';
 
-// Define fallback testimonial data
+// // Define fallback testimonial data
 const MOCK_TESTIMONIALS = [
-  {
-    id: 'm1',
-    title: 'My Internship at Google',
-    programName: 'Tech Connect Program',
-    thumbnailUrl: '/img/testimonial-1.jpg',
-    videoUrl: 'https://example.com/videos/testimonial1.mp4',
-  },
-  {
-    id: 'm2',
-    title: 'How HBCUUSA Changed My Career Path',
-    programName: 'Leadership Development',
-    thumbnailUrl: '/img/testimonial-2.jpg',
-    videoUrl: '/img/testimonial-video-2.mp4',
-  },
-  {
-    id: 'm3',
-    title: 'From Student to Full-Time Software Engineer',
-    programName: 'Software Engineering Track',
-    thumbnailUrl: '/img/testimonial-3.jpg',
-    videoUrl: 'https://example.com/videos/testimonial3.mp4',
-  }
+//   // {
+//   //   id: 'm1',
+//   //   title: 'How HBCUUSA Changed My Career Path',
+//   //   programName: 'The Pitch Competition',
+//   //   thumbnailUrl: '/img/testimonial-1.jpg',
+//   //   videoUrl: 'https://example.com/videos/testimonial1.mp4',
+//   // }
+//   /* Commented out for now
+//   {
+//     id: 'm2',
+//     title: 'How HBCUUSA Changed My Career Path',
+//     programName: 'Leadership Development',
+//     thumbnailUrl: '/img/testimonial-2.jpg',
+//     videoUrl: '/img/testimonial-video-2.mp4',
+//   },
+//   {
+//     id: 'm3',
+//     title: 'From Student to Full-Time Software Engineer',
+//     programName: 'Software Engineering Track',
+//     thumbnailUrl: '/img/testimonial-3.jpg',
+//     videoUrl: 'https://example.com/videos/testimonial3.mp4',
+//   }
+//   */
 ];
 
 const baseURL = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
@@ -45,10 +47,8 @@ const Experience = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
   const sidebarRef = useRef(null);
   const profileDropdownRef = useRef(null);
-  const carouselRef = useRef(null);
 
   // Fetch testimonials from the API
   useEffect(() => {
@@ -118,18 +118,6 @@ const Experience = () => {
     }
   };
 
-  // Navigate to the next slide
-  const nextSlide = () => {
-    if (!testimonials.length) return;
-    setCurrentSlide((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-  };
-
-  // Navigate to the previous slide
-  const prevSlide = () => {
-    if (!testimonials.length) return;
-    setCurrentSlide((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  };
-
   return (
     <div className="relative min-h-screen bg-white flex">
       {/* Subtle Gradient Background */}
@@ -158,7 +146,7 @@ const Experience = () => {
           <main className="max-w-6xl mx-auto px-6 py-16">
             {/* Page Title */}
             <motion.div 
-              className="text-center mb-16"
+              className="text-center mb-12"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -195,114 +183,59 @@ const Experience = () => {
                 </div>
               </div>
             ) : testimonials && testimonials.length > 0 ? (
-              <div className="relative mb-20" ref={carouselRef}>
-                {/* Main Carousel */}
-                <div className="relative w-full overflow-hidden rounded-xl shadow-lg bg-gray-900 aspect-video">
-                  {testimonials.map((testimonial, index) => (
-                    <div 
-                      key={testimonial.id || index} 
-                      className={`absolute inset-0 w-full h-full transition-all duration-500 ease-in-out ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+              <div className="max-w-4xl mx-auto mb-16">
+                {/* Single Testimonial Video */}
+                <div className="relative overflow-hidden rounded-xl shadow-lg bg-gray-900">
+                  {selectedVideo === testimonials[0].id ? (
+                    <video 
+                      src={testimonials[0].videoUrl} 
+                      className="w-full aspect-video object-contain"
+                      controls
+                      autoPlay
+                      onEnded={() => {
+                        setSelectedVideo(null);
+                        setIsPlaying(false);
+                      }}
                     >
-                      {selectedVideo === testimonial.id ? (
-                        <video 
-                          src={testimonial.videoUrl} 
-                          className="w-full h-full object-cover"
-                          controls
-                          autoPlay
-                          onEnded={() => {
-                            setSelectedVideo(null);
-                            setIsPlaying(false);
-                            // Auto advance to next slide after video ends
-                            nextSlide();
-                          }}
-                        >
-                          Your browser does not support the video tag.
-                        </video>
-                      ) : (
-                        <div 
-                          className="relative w-full h-full cursor-pointer group"
-                          onClick={() => handleVideoSelect(testimonial.id)}
-                        >
-                          <img 
-                            src={testimonial.thumbnailUrl || `/img/default-testimonial-${index % 3 + 1}.jpg`} 
-                            alt={testimonial.title || "Student Testimonial"}
-                            className="w-full h-full object-cover brightness-75"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = '/img/default-thumbnail.jpg';
-                            }}
-                          />
-                          <div className="absolute inset-0 flex flex-col items-center justify-center">
-                            <div className="bg-white bg-opacity-90 rounded-full p-5 mb-6 transform transition-transform duration-300 group-hover:scale-110 shadow-lg">
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M8 5v14l11-7z" />
-                              </svg>
-                            </div>
-                            <div className="text-white text-center px-4 py-2 bg-black bg-opacity-50 rounded-lg backdrop-blur-sm max-w-md">
-                              <h3 className="text-xl font-semibold mb-1">{testimonial.title || "Student Experience"}</h3>
-                              {testimonial.programName && (
-                                <p className="text-blue-300 text-sm">{testimonial.programName}</p>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                  
-                  {/* Navigation Arrows */}
-                  <button 
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-3 z-20 text-white"
-                    onClick={prevSlide}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-                  <button 
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-70 rounded-full p-3 z-20 text-white"
-                    onClick={nextSlide}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                  
-                  {/* Indicators */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
-                    {testimonials.map((_, index) => (
-                      <button
-                        key={index}
-                        className={`w-2.5 h-2.5 rounded-full transition-all ${
-                          index === currentSlide ? 'bg-white scale-110' : 'bg-white/50'
-                        }`}
-                        onClick={() => setCurrentSlide(index)}
-                      />
-                    ))}
-                  </div>
-                </div>
-                
-                {/* Thumbnails */}
-                <div className="flex overflow-x-auto mt-4 gap-2 pb-2 px-2 no-scrollbar">
-                  {testimonials.map((testimonial, index) => (
-                    <button
-                      key={testimonial.id || index}
-                      className={`relative flex-shrink-0 w-24 h-16 rounded-md overflow-hidden transition-all ${
-                        index === currentSlide ? 'ring-2 ring-blue-500 scale-105' : 'opacity-70'
-                      }`}
-                      onClick={() => setCurrentSlide(index)}
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <div 
+                      className="relative w-full aspect-video cursor-pointer group"
+                      onClick={() => handleVideoSelect(testimonials[0].id)}
                     >
                       <img 
-                        src={testimonial.thumbnailUrl || `/img/default-testimonial-${index % 3 + 1}.jpg`} 
-                        alt={testimonial.title || "Thumbnail"}
-                        className="w-full h-full object-cover"
+                        src={testimonials[0].thumbnailUrl || '/img/default-testimonial-1.jpg'} 
+                        alt={testimonials[0].title || "Student Testimonial"}
+                        className="w-full h-full object-cover brightness-75"
                         onError={(e) => {
                           e.target.onerror = null;
                           e.target.src = '/img/default-thumbnail.jpg';
                         }}
                       />
-                    </button>
-                  ))}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <div className="bg-white bg-opacity-90 rounded-full p-5 mb-6 transform transition-transform duration-300 group-hover:scale-110 shadow-lg">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-14 w-14 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                        <div className="text-white text-center px-4 py-2 bg-black bg-opacity-50 rounded-lg backdrop-blur-sm max-w-md">
+                          <h3 className="text-xl font-semibold mb-1">{testimonials[0].title || "Student Experience"}</h3>
+                          {testimonials[0].programName && (
+                            <p className="text-blue-300 text-sm">{testimonials[0].programName}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Video Description */}
+                <div className="mt-6 bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{testimonials[0].title || "Student Experience"}</h3>
+                  <p className="text-gray-600">
+                    Watch this inspiring story from one of our students who participated in one of the program through {testimonials[0].programName || "HBCUUSA"}.
+                  </p>
                 </div>
               </div>
             ) : (
@@ -310,22 +243,6 @@ const Experience = () => {
                 <p className="text-gray-500">No testimonials available at the moment.</p>
               </div>
             )}
-            
-            {/* Call to Action */}
-            <div className="mt-16 text-center bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">Ready to start your journey?</h2>
-              <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-                Join thousands of students who have found opportunities that match their interests and career goals.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link to="/programs" className="px-6 py-3 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
-                  Explore Programs
-                </Link>
-                <Link to="/apply" className="px-6 py-3 bg-white border border-gray-300 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors">
-                  Apply Now
-                </Link>
-              </div>
-            </div>
           </main>
         </div>
 

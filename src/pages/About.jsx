@@ -78,64 +78,64 @@ export default function About() {
         
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
-          <main className="bg-gray-100 dark:bg-gray-800 font-body">
-        {/* Image Section - Full size, responsive */}
-        <section className="max-w-6xl mx-auto">
-          <div className="w-full h-[400px] md:h-[500px] overflow-hidden">
-            <img
-              src="img/9404239828_0443447145_o.jpg"
-              alt="HBCU Campus"
-              className="w-full h-full object-cover object-center"
-            />
-          </div>
-        </section>
+          <main className="bg-transparent dark:bg-gray-800 font-body">
+            {/* Image Section - Full size, responsive */}
+            <section className="max-w-6xl mx-auto">
+              <div className="w-full h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden">
+                <img
+                  src="img/9404239828_0443447145_o.jpg"
+                  alt="HBCU Campus"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
+            </section>
 
-        {/* Welcome Section */}
-        <section className="bg-white dark:bg-gray-900 py-8 sm:py-12">
-          <div className="max-w-6xl mx-auto px-4 sm:px-8">
-            {/* Welcome Content */}
-            <h2 className="text-2xl sm:text-3xl font-bold mb-6 dark:text-white text-center sm:text-left">
-              Welcome to HBCUUSA: A HBCU & MSI Initiative
-            </h2>
-            <div className="space-y-4 max-w-4xl">
-              <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed">
-                Do you want to take advantage of opportunities and gain industry experience during college? 
-                Do you see your friends' posts about scholarships and wonder where they applied from?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed">
-                HBCUUSA is a community for HBCU and MSI students to find internships, fellowships, and CSR programs. 
-                We connect students with Corporate Social Responsibility (CSR) initiatives and fellowships designed 
-                to promote diversity, inclusion, and social impact.
-              </p>
-            </div>
-          </div>
-        </section>
+            {/* Welcome Section */}
+            <section className="bg-transparent dark:bg-gray-900 py-6 sm:py-8 md:py-12">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
+                {/* Welcome Content */}
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 dark:text-white text-center sm:text-left">
+                  Welcome to HBCUUSA: A HBCU & MSI Initiative
+                </h2>
+                <div className="space-y-3 sm:space-y-4 max-w-4xl">
+                  <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                    Do you want to take advantage of opportunities and gain industry experience during college? 
+                    Do you see your friends' posts about scholarships and wonder where they applied from?
+                  </p>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                    HBCUUSA is a community for HBCU and MSI students to find internships, fellowships, and CSR programs. 
+                    We connect students with Corporate Social Responsibility (CSR) initiatives and fellowships designed 
+                    to promote diversity, inclusion, and social impact.
+                  </p>
+                </div>
+              </div>
+            </section>
 
-        {/* Mission & Vision Section */}
-        <section className="bg-white dark:bg-gray-900 py-4 sm:py-6">
-          <div className="max-w-6xl mx-auto px-4 sm:px-8">
-            <div className="max-w-4xl">
-              {/* Mission Section */}
-              <h2 className="text-2xl sm:text-3xl font-bold mb-6 dark:text-white text-center sm:text-left">
-                Our Mission
-              </h2>
-              <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed mb-10">
-                Our mission is to <strong>empower HBCU and MSI students</strong> with resources, opportunities, 
-                and information about CSR initiatives that support their personal and professional development.
-              </p>
+            {/* Mission & Vision Section */}
+            <section className="bg-transparent dark:bg-gray-900 py-4 sm:py-6">
+              <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
+                <div className="max-w-4xl">
+                  {/* Mission Section */}
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-6 dark:text-white text-center sm:text-left">
+                    Our Mission
+                  </h2>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed mb-6 sm:mb-10">
+                    Our mission is to <strong>empower HBCU and MSI students</strong> with resources, opportunities, 
+                    and information about CSR initiatives that support their personal and professional development.
+                  </p>
 
-              {/* Vision Section */}
-              <h2 className="text-2xl sm:text-3xl font-bold mb-6 dark:text-white text-center sm:text-left">
-                Our Vision
-              </h2>
-              <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed">
-                We envision a future where <strong>every student</strong>, regardless of background, has equal access 
-                to growth opportunities and can make a <strong>positive impact</strong> in their communities.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
+                  {/* Vision Section */}
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-6 dark:text-white text-center sm:text-left">
+                    Our Vision
+                  </h2>
+                  <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                    We envision a future where <strong>every student</strong>, regardless of background, has equal access 
+                    to growth opportunities and can make a <strong>positive impact</strong> in their communities.
+                  </p>
+                </div>
+              </div>
+            </section>
+          </main>
         </div>
 
         {/* Footer */}

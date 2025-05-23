@@ -111,13 +111,13 @@ const Contribute = () => {
         
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
-          <main className="flex-1 p-8 font-body">
+          <main className="flex-1 p-4 sm:p-6 md:p-8 font-body">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md mb-8">
-                <h1 className="text-2xl font-bold mb-6 text-center dark:text-white">Contribute by adding a program</h1>
+              <div className="bg-white dark:bg-gray-900 p-4 sm:p-6 md:p-8 rounded-lg shadow-md mb-8">
+                <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center dark:text-white">Contribute by adding a program</h1>
                 
                 {loginPrompt && !user && (
-                  <div className="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 text-yellow-800 dark:text-yellow-200 rounded">
+                  <div className="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900 border border-yellow-400 text-yellow-800 dark:text-yellow-200 rounded text-sm sm:text-base">
                     <p>You need to be logged in to contribute.</p>
                     <Link to="/login" className="text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
                       Go to Login
@@ -126,7 +126,7 @@ const Contribute = () => {
                 )}
                 
                 {user && (
-                  <div className="mb-4 p-3 bg-blue-100 dark:bg-blue-900 border border-blue-400 text-blue-800 dark:text-blue-200 rounded">
+                  <div className="mb-4 p-3 bg-blue-100 dark:bg-blue-900 border border-blue-400 text-blue-800 dark:text-blue-200 rounded text-sm sm:text-base">
                     <p>Want to see your previous contributions?</p>
                     <Link to="/my-contributions" className="text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block">
                       View My Contributions
@@ -136,7 +136,7 @@ const Contribute = () => {
                 
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label htmlFor="name" className="block mb-1 dark:text-gray-300">Program Name</label>
+                    <label htmlFor="name" className="block mb-1 text-sm sm:text-base dark:text-gray-300">Program Name</label>
                     <input
                       type="text"
                       id="name"
@@ -144,12 +144,12 @@ const Contribute = () => {
                       placeholder="Fellowship or program name..."
                       onChange={handleChange}
                       value={data.name}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 text-sm sm:text-base"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="website" className="block mb-1 dark:text-gray-300">Program Website</label>
+                    <label htmlFor="website" className="block mb-1 text-sm sm:text-base dark:text-gray-300">Program Website</label>
                     <input
                       type="text"
                       id="website"
@@ -157,29 +157,29 @@ const Contribute = () => {
                       placeholder="Website URL (e.g., https://example.com)..."
                       onChange={handleChange}
                       value={data.website}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 text-sm sm:text-base"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="description" className="block mb-1 dark:text-gray-300">Program Description</label>
+                    <label htmlFor="description" className="block mb-1 text-sm sm:text-base dark:text-gray-300">Program Description</label>
                     <textarea
                       id="description"
                       name="description"
                       placeholder="Describe the program, eligibility requirements, application process, etc..."
                       onChange={handleChange}
                       value={data.description}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300"
-                      style={{ height: '200px' }}
+                      className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 text-sm sm:text-base"
+                      style={{ height: '150px', minHeight: '150px', maxHeight: '400px' }}
                       required
                     ></textarea>
                   </div>
-                  {error && <div className="text-red-500">{error}</div>}
-                  {success && <div className="text-green-500">{success}</div>}
+                  {error && <div className="text-red-500 text-sm sm:text-base">{error}</div>}
+                  {success && <div className="text-green-500 text-sm sm:text-base">{success}</div>}
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    className={`w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-blue-600 dark:hover:bg-blue-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''} text-sm sm:text-base`}
                   >
                     {loading ? 'Submitting...' : 'Submit Contribution'}
                   </button>

@@ -113,7 +113,7 @@ const PublicResumes = () => {
         
         {/* Page Content */}
         <div className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'}`}>
-          <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-12">
+          <div className="min-h-screen bg-transparent dark:bg-gray-900 py-12">
             <div className="max-w-6xl mx-auto px-4">
               <h1 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
                 Public Resumes

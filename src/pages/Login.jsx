@@ -272,30 +272,30 @@ const Login = () => {
       <div className="relative z-10 flex-1">
         {/* Header */}
         <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 w-full">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="container mx-auto px-4 py-3 md:px-6 md:py-4 flex justify-between items-center">
             <div className="flex items-center">              
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1 }}
-                className="pl-2"
+                className="pl-0 md:pl-2"
               >
                 <Link to="/">
                   <img 
                     src="/img/logo-no-background.png" 
                     alt="HBCU Logo" 
-                    className="w-40 h-auto"
+                    className="w-32 md:w-40 h-auto"
                   />
                 </Link>
               </motion.div>
             </div>
 
-            <div className="flex items-center space-x-6">
-              <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <div className="flex items-center space-x-3 md:space-x-6">
+              <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors text-sm md:text-base">
                 Log In
               </Link>
               <Link to="/signup">
-                <button className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
+                <button className="px-4 py-1.5 md:px-6 md:py-2 bg-black text-white rounded-full text-xs md:text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
                   Sign Up
                 </button>
               </Link>
@@ -303,9 +303,9 @@ const Login = () => {
           </div>
         </header>
         
-        <main className="flex-1 flex justify-center items-center py-8 px-4">
-          <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full transition-all duration-300 hover:shadow-xl">
-            <h1 className="text-3xl font-bold mb-8 text-center text-gray-800 dark:text-white">Welcome Back</h1>
+        <main className="flex-1 flex justify-center items-center py-6 md:py-8 px-4">
+          <div className="bg-white dark:bg-gray-900 p-5 md:p-8 rounded-lg shadow-lg max-w-md w-full transition-all duration-300 hover:shadow-xl">
+            <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center text-gray-800 dark:text-white">Welcome Back</h1>
             
             {success && (
               <div className="p-3 mb-4 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg text-sm border border-green-200 dark:border-green-800 transition-all duration-300">
@@ -315,7 +315,7 @@ const Login = () => {
 
             {verifyingMagicLink ? (
               <div className="space-y-6 text-center">
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Verifying Magic Link</h2>
+                <h2 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-white mb-4">Verifying Magic Link</h2>
                 <div className="flex flex-col items-center justify-center py-6">
                   <svg className="animate-spin h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -334,7 +334,7 @@ const Login = () => {
               </div>
             ) : showResetForm ? (
               <form className="space-y-6" onSubmit={handleResetPassword}>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Reset Your Password</h2>
+                <h2 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-white mb-4">Reset Your Password</h2>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                     <FiMail size={18} />
@@ -355,7 +355,7 @@ const Login = () => {
                   </div>
                 )}
                 
-                <div className="flex space-x-3">
+                <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
                   <button
                     type="submit"
                     disabled={loading}
@@ -388,7 +388,7 @@ const Login = () => {
               </form>
             ) : showMagicLinkForm ? (
               <form className="space-y-6" onSubmit={handleMagicLink}>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">Passwordless Sign In</h2>
+                <h2 className="text-lg md:text-xl font-semibold text-gray-800 dark:text-white mb-4">Passwordless Sign In</h2>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
                     <FiMail size={18} />
@@ -409,7 +409,7 @@ const Login = () => {
                   </div>
                 )}
                 
-                <div className="flex space-x-3">
+                <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-3">
                   <button
                     type="submit"
                     disabled={loading}
@@ -573,7 +573,7 @@ const Login = () => {
                 ></div>
                 
                 <div className="mt-6 text-center">
-                  <p className="text-gray-600 dark:text-gray-400 mb-2">
+                  <p className="text-gray-600 dark:text-gray-400 mb-2 text-sm md:text-base">
                     New here?
                   </p>
                   <Link to="/signup">

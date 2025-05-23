@@ -4,7 +4,6 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-import Footer from '../components/Footer';
 
 const Signup = () => {
   const [data, setData] = useState({ 
@@ -148,32 +147,32 @@ const Signup = () => {
       <div className="relative z-10 flex-1">
         {/* Header */}
         <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 w-full">
-          <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+          <div className="container mx-auto px-4 py-3 md:px-6 md:py-4 flex justify-between items-center">
             <div className="flex items-center">
               {/* Logo */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1 }}
-                className="pl-2"
+                className="pl-0 md:pl-2"
               >
                 <Link to="/">
                   <img 
                     src="/img/logo-no-background.png" 
                     alt="HBCU Logo" 
-                    className="w-40 h-auto"
+                    className="w-32 md:w-40 h-auto"
                   />
                 </Link>
               </motion.div>
             </div>
 
             {/* Navigation Links */}
-            <div className="flex items-center space-x-6">
-              <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <div className="flex items-center space-x-3 md:space-x-6">
+              <Link to="/login" className="text-gray-600 hover:text-gray-900 transition-colors text-sm md:text-base">
                 Log In
               </Link>
               <Link to="/signup">
-                <button className="px-6 py-2 bg-black text-white rounded-full text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
+                <button className="px-4 py-1.5 md:px-6 md:py-2 bg-black text-white rounded-full text-xs md:text-sm font-medium hover:bg-gray-900 transition-colors shadow-sm">
                   Sign Up
                 </button>
               </Link>
@@ -182,11 +181,11 @@ const Signup = () => {
         </header>
         
         {/* Main content */}
-        <main className="flex-1 flex justify-center items-center py-8 px-4">
-          <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-md max-w-md w-full">
+        <main className="flex-1 flex justify-center items-center py-6 md:py-8 px-4">
+          <div className="bg-white dark:bg-gray-900 p-5 md:p-8 rounded-lg shadow-md w-full max-w-md">
             {verificationSent ? (
               <div className="text-center">
-                <h1 className="text-2xl font-bold mb-4">Check Your Email</h1>
+                <h1 className="text-xl md:text-2xl font-bold mb-4">Check Your Email</h1>
                 <div className="mb-6 text-gray-600 dark:text-gray-300">
                   <p>We've sent a verification link to <strong>{verificationEmail}</strong>.</p>
                   <p className="mt-2">Please check your inbox and click the link to verify your email address.</p>
@@ -226,7 +225,7 @@ const Signup = () => {
               </div>
             ) : (
               <>
-                <h1 className="text-2xl font-bold mb-6 text-center">Sign Up for More Opportunities</h1>
+                <h1 className="text-xl md:text-2xl font-bold mb-6 text-center">Sign Up for More Opportunities</h1>
                 <form id="signup" className="space-y-4" onSubmit={handleSubmit}>
                   <input
                     type="text"
@@ -317,7 +316,7 @@ const Signup = () => {
                 ></div>
 
                 <div className="mt-4 text-center">
-                  <h1 className="text-lg">Already have an account?</h1>
+                  <h1 className="text-base md:text-lg">Already have an account?</h1>
                   <Link to="/login">
                     <button
                       type="button"
