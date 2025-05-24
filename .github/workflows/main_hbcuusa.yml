@@ -27,9 +27,7 @@ jobs:
           npm ci  # Use npm ci instead of npm install for faster, reliable builds
           npm run build --if-present
       
-      # Add serve dependency for production
-      - name: Install serve for production
-        run: npm install serve --save
+
       
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
